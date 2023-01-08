@@ -1,0 +1,53 @@
+.dashboard-container {
+  border-left: 1px solid lightgrey;
+  border-right: 1px solid lightgrey;
+  // border: 0 1px solid lightgrey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // margin: 2rem 1rem;
+
+  // .title {
+  //   color: #6200ee;
+  //   font-weight: bold;
+  //   font-size: 20px;W
+  // }
+
+  // .area {
+  //   color: grey;
+  //   font-size: 12px;
+  // }
+
+  // .expense {
+  //   color: red;
+  //   font-size: 12px;
+  // }
+
+  // .date {
+  //   color: grey;
+  //   font-weight: bold;
+  //   font-size: 20px;
+  // }
+
+  .floating {
+    position: fixed;
+    bottom: 5%;
+    right: 10%;
+  }
+
+  .card {
+    margin: 8px;
+
+    .box-container {
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  @media only screen and (min-width: 786px) {
+    .floating {
+      right: 41%;
+    }
+  }
+}
