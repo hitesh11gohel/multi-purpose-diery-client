@@ -11,11 +11,11 @@ import {
 import "./dashboard.scss";
 import AddContent from "../Modals/AddContent";
 import Axios from "axios";
-import { getExpenses } from "../../service";
+import { getExpenses, getExpense } from "../../service";
 import SearchIcon from "@mui/icons-material/Search";
 import { debounce } from "lodash";
 import moment from "moment";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import { sum } from "lodash";
@@ -33,6 +33,15 @@ const Dashboard = () => {
 
   const handleChildData = () => fetchAllRecords();
   const clearCurrentMonthValue = (value) => setCurrentMonth(value);
+  const handleDoubleClickEvent = (value) => {
+    Axios({ url: `${getExpense}/${value}`, method: "GET" })
+      .then((res) => {
+        navigate(`/expense-detail/${value}`, {
+          state: { expense: res.data.data },
+        });
+      })
+      .catch((err) => console.log("Error :", err));
+  };
 
   const fetchAllRecords = () => {
     Axios.get(getExpenses)
@@ -58,7 +67,7 @@ const Dashboard = () => {
       button: "Ok",
       dangerMode: true,
     }).then((out) => {
-      console.log(out, "==",error);
+      console.log(out, "==", error);
       if (out && error) {
         localStorage.removeItem("loggedIn");
         navigate("/login");
@@ -116,6 +125,7 @@ const Dashboard = () => {
             handleChange={handleChange}
             currentMonth={currentMonth}
             clearCurrentMonth={clearCurrentMonthValue}
+            handleDoubleClick={handleDoubleClickEvent}
           />
         )}
         <AddContent fetchRecords={handleChildData} />
@@ -149,6 +159,7 @@ const ExpenseList = ({
   handleChange,
   clearCurrentMonth,
   currentMonth,
+  handleDoubleClick,
 }) => {
   items = items.filter(
     (item) =>
@@ -161,7 +172,7 @@ const ExpenseList = ({
     <>
       <Box className="d-flex justify-content-between align-items-center">
         <Button onClick={() => clearCurrentMonth("")}>
-          <ArrowBackIosIcon />
+          <ArrowBackIosNewIcon />
         </Button>
         <Input
           fullWidth
@@ -191,7 +202,11 @@ const ExpenseList = ({
       {items.length > 0 ? (
         items.map(({ _id, title, address, date, budget }) => {
           return (
-            <Card key={_id} className="card">
+            <Card
+              key={_id}
+              className="card"
+              onDoubleClick={() => handleDoubleClick(_id)}
+            >
               <Box className="box-container">
                 <div>
                   <Typography variant="body1" color="primary">

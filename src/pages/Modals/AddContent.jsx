@@ -9,6 +9,8 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
@@ -18,6 +20,7 @@ import DescriptionIcon from "@mui/icons-material/Description";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ImageIcon from "@mui/icons-material/Image";
+import PaymentsIcon from "@mui/icons-material/Payments";
 import "./addContent.scss";
 import Axios from "axios";
 import swal from "sweetalert";
@@ -39,9 +42,17 @@ export default function AddContent(props) {
     formState: { errors },
   } = useForm();
 
+  // const [age, setAge] = React.useState("");
+
+  // const handleChange = (event) => {
+  //   setAge(event.target.value);
+  // };
+
   const onSubmit = (formData) => {
-    if (formData.image) {
+    if (formData.image?.length > 0) {
       formData.image = URL.createObjectURL(formData.image[0]);
+    } else {
+      formData.image = "";
     }
     Axios({
       url: addExpense,
@@ -80,6 +91,7 @@ export default function AddContent(props) {
         <form onSubmit={handleSubmit(onSubmit)} className="modal-container">
           <DialogTitle>Add Item</DialogTitle>
           <DialogContent>
+            {/* Title */}
             <Box className="input-box">
               <Input
                 name="title"
@@ -100,11 +112,13 @@ export default function AddContent(props) {
               )}
             </Box>
 
+            {/* Description */}
             <Box className="input-box">
               <Input
                 name="description"
                 placeholder="Add description"
                 className="input"
+                {...register("description")}
                 startAdornment={
                   <InputAdornment position="start">
                     <DescriptionIcon />
@@ -113,6 +127,7 @@ export default function AddContent(props) {
               />
             </Box>
 
+            {/* Address */}
             <Box className="input-box">
               <Input
                 name="address"
@@ -133,6 +148,7 @@ export default function AddContent(props) {
               )}
             </Box>
 
+            {/* Date */}
             <Box className="input-box">
               <Input
                 name="date"
@@ -151,6 +167,7 @@ export default function AddContent(props) {
               {errors.date && <p className="errors">{errors.date?.message}</p>}
             </Box>
 
+            {/* Budget */}
             <Box className="input-box">
               <Input
                 name="budget"
@@ -172,6 +189,26 @@ export default function AddContent(props) {
               )}
             </Box>
 
+            {/* Payment type */}
+            <Box className="input-box">
+              <Select
+                name="paymentType"
+                variant="standard"
+                fullWidth
+                defaultValue="COD"
+                {...register("paymentType")}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <PaymentsIcon />
+                  </InputAdornment>
+                }
+              >
+                <MenuItem value="COD"> COD </MenuItem>
+                <MenuItem value="UPI">UPI</MenuItem>
+              </Select>
+            </Box>
+
+            {/* image */}
             <Box className="input-box">
               <Input
                 name="image"
@@ -197,6 +234,19 @@ export default function AddContent(props) {
           </DialogActions>
         </form>
       </Dialog>
+
+      {/* <Snackbar
+        open={open}
+        autoHideDuration={1000}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        // onClose={handleClose}
+        message="Note archived"
+        // action={action}
+      >
+        <Alert severity="success" sx={{ width: "100%" }}>
+          This is a success message!
+        </Alert>
+      </Snackbar> */}
     </>
   );
 }
