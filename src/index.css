@@ -2,14 +2,10 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Faustina', serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* background-color: #6200EE;
-  color: #fff; */
-  background-color: #fefefe;
+  background-color: #edf2f9;
 }
 
 code {
@@ -18,6 +14,9 @@ code {
 }
 
 .app-container {
-  display: grid;
-  justify-content: center;
+  width: 480px;
+  height: 100vh;
+  margin: auto;
+  border: 1px solid #e2e2e2;
+  box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
 }

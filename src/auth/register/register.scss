@@ -2,10 +2,6 @@
   margin: 2rem 0;
   padding: 3rem;
 
-  .input {
-    width: 250px;
-  }
-
   .input-box {
     margin: 2rem 0;
   }
@@ -26,11 +22,5 @@
     text-decoration: none;
     margin-left: 5px;
     color: #1976d2;
-  }
-
-  @media only screen and (min-width: 400px) {
-    .input {
-      width: 400px;
-    }
   }
 }

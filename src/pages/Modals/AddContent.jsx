@@ -23,7 +23,7 @@ import Axios from "axios";
 import swal from "sweetalert";
 import { addExpense } from "../../service";
 
-export default function AddContent() {
+export default function AddContent(props) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => setOpen(true);
@@ -40,7 +40,6 @@ export default function AddContent() {
   } = useForm();
 
   const onSubmit = (formData) => {
-    console.log("formData :", formData);
     if (formData.image) {
       formData.image = URL.createObjectURL(formData.image[0]);
     }
@@ -53,6 +52,7 @@ export default function AddContent() {
         if (res.status === 201) {
           handleClose();
           reset();
+          props.fetchRecords(true);
         } else {
           showDialog();
         }
@@ -76,7 +76,7 @@ export default function AddContent() {
         </Fab>
       </Box>
 
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleClose} scroll="body">
         <form onSubmit={handleSubmit(onSubmit)} className="modal-container">
           <DialogTitle>Add Item</DialogTitle>
           <DialogContent>
@@ -178,6 +178,7 @@ export default function AddContent() {
                 placeholder="Add image"
                 className="input"
                 type="file"
+                {...register("image")}
                 // {...register("image", { required: "Please add image ***" })}
                 startAdornment={
                   <InputAdornment position="start">

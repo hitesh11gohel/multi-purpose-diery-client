@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Card from "../../components/card/Card";
 import { Box, Input, InputAdornment, Typography } from "@mui/material";
@@ -25,6 +26,12 @@ const Register = () => {
   } = useForm();
 
   const [password, setPassword] = useState(true);
+
+  useEffect(() => {
+    if (localStorage.getItem("loggedIn")) {
+      navigate("/");
+    }
+  }, []);
 
   const onSubmit = (user) => {
     Axios({ url: signUp, method: "POST", data: user })

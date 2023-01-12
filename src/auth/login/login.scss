@@ -1,48 +1,6 @@
-// .login-container {
-//   padding: 3rem;
-//   border-radius: "15px";
-
-//   .input {
-//     width: 250px;
-//   }
-
-//   .input-box {
-//     margin: 2rem 0;
-//   }
-
-//   .errors {
-//     color: red;
-//     margin-bottom: 0;
-//     text-align: left;
-//     font-size: 12px;
-//   }
-
-//   .registerLink {
-//     color: gray;
-//     font-size: 12px !important;
-//   }
-
-//   .routerLink {
-//     text-decoration: none;
-//     margin-left: 5px;
-//     color: #1976d2;
-//   }
-
-//   @media only screen and (min-width: 400px) {
-//     .input {
-//       width: 400px;
-//     }
-//   }
-// }
-
-
-.register-container {
+.login-container {
   margin: 2rem 0;
   padding: 3rem;
-
-  .input {
-    width: 250px;
-  }
 
   .input-box {
     margin: 2rem 0;
@@ -64,11 +22,5 @@
     text-decoration: none;
     margin-left: 5px;
     color: #1976d2;
-  }
-
-  @media only screen and (min-width: 400px) {
-    .input {
-      width: 400px;
-    }
   }
 }

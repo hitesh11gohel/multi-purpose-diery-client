@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Card from "../../components/card/Card";
 import { Box, Input, InputAdornment, Typography } from "@mui/material";
@@ -19,6 +20,12 @@ const Login = () => {
     reset,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    if (localStorage.getItem("loggedIn")) {
+      navigate("/");
+    }
+  }, []);
 
   const [isPassword, setIsPassword] = useState(true);
 
@@ -48,7 +55,7 @@ const Login = () => {
 
   return (
     <Card>
-      <Box className="register-container">
+      <Box className="login-container">
         <Typography variant="h4" textAlign={"center"}>
           Login
         </Typography>
