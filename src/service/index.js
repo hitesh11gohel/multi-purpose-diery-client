@@ -7,3 +7,4 @@ export const getExpenses = `${process.env.REACT_APP_BASE_URL}/api/expense/get-al
 export const getExpense = `${process.env.REACT_APP_BASE_URL}/api/expense/get`;
 export const deleteExpense = `${process.env.REACT_APP_BASE_URL}/api/expense/delete`;
 export const addExpense = `${process.env.REACT_APP_BASE_URL}/api/expense/add`;
+export const updateExpense = `${process.env.REACT_APP_BASE_URL}/api/expense/update`;

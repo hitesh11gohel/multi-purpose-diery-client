@@ -33,7 +33,9 @@ const Dashboard = () => {
   const [currentMonth, setCurrentMonth] = useState("");
   const [enableAction, setEnableAction] = useState(false);
 
-  useEffect(() => fetchAllRecords(), []);
+  useEffect(() => {
+    if (localStorage.getItem("loggedIn")) fetchAllRecords();
+  }, []);
   useEffect(() => getMonthWiseData(), [items]);
 
   const handleChildData = () => fetchAllRecords();
@@ -72,7 +74,6 @@ const Dashboard = () => {
       button: "Ok",
       dangerMode: true,
     }).then((out) => {
-      console.log(out, "==", error);
       if (out && error) {
         localStorage.removeItem("loggedIn");
         navigate("/login");
