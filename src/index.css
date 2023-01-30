@@ -14,6 +14,7 @@ code {
 }
 
 .app-container {
+  background-image: url("https://picsum.photos/480/1000?grayscale&blur=7");
   width: 480px;
   height: 100vh;
   margin: auto;

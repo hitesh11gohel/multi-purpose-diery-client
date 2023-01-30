@@ -89,7 +89,7 @@ export default function AddContent(props) {
 
       <Dialog open={open} onClose={handleClose} scroll="body">
         <form onSubmit={handleSubmit(onSubmit)} className="modal-container">
-          <DialogTitle>Add Item</DialogTitle>
+          <DialogTitle color="primary">Add Item</DialogTitle>
           <DialogContent>
             {/* Title */}
             <Box className="input-box">

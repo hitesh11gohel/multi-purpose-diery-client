@@ -26,6 +26,13 @@ $secondary-color: #ffc107;
     border-bottom: none;
   }
 
+  .data-not-found {
+    padding: 1rem;
+    margin: 2rem 0;
+    text-align: center;
+    font-weight: bold;
+  }
+
   .card {
     margin: 8px 0;
     height: 6rem;
@@ -38,11 +45,6 @@ $secondary-color: #ffc107;
       align-items: center;
     }
 
-    .data-not-found {
-      padding: "1rem";
-      text-align: "center";
-    }
-
     .action-container {
       display: none !important;
     }
@@ -52,21 +54,31 @@ $secondary-color: #ffc107;
     }
   }
 
+  canvas {
+    background-color: #f8f9fa;
+    margin-top: 8px;
+    padding: 8px;
+  }
+
   @media only screen and (min-width: 786px) {
     .floating {
-      right: 41%;
+      right: 41%
     }
 
-    .data-not-found {
-      width: 378px;
+    .scroll-to-top {
+      left: 41%
     }
+
+    // .data-not-found {
+    //   width: 378px;
+    // }
   }
 
-  @media only screen and (min-width: 320px) {
-    .data-not-found {
-      width: 320px;
-    }
-  }
+  // @media only screen and (min-width: 320px) {
+  //   .data-not-found {
+  //     width: 320px;
+  //   }
+  // }
 }
 
 /* scroller */
@@ -81,5 +93,6 @@ $secondary-color: #ffc107;
 }
 
 #scroller::-webkit-scrollbar-thumb {
-  background-color: $primary-color;
+  // background-color: $primary-color;
+  background-color: #000;
 }

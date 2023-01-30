@@ -24,6 +24,9 @@ import { useNavigate } from "react-router-dom";
 import { sum } from "lodash";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import { Bar } from "react-chartjs-2";
+import "chart.js/auto";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -31,6 +34,7 @@ const Dashboard = () => {
   const [cloneItems, setCloneItems] = useState([]);
   const [months, setMonths] = useState([]);
   const [currentMonth, setCurrentMonth] = useState("");
+  const [isChartViewEnable, setIsChartViewEnable] = useState(false);
   const [enableAction, setEnableAction] = useState(false);
 
   useEffect(() => {
@@ -98,29 +102,26 @@ const Dashboard = () => {
       return setItems(cloneItems);
     }
     // search any value in filter
-    // const filtered = [];
-    // items.filter((item) => {
-    //   if (item.title.toLowerCase().includes(e.target.value.toLowerCase())) {
-    //     return filtered.push(item);
-    //   } else if (item.date.toString().includes(e.target.value)) {
-    //     return filtered.push(item);
-    //   } else if (item.budget.toString().includes(e.target.value)) {
-    //     return filtered.push(item);
-    //   } else if (
-    //     item.address.toLowerCase().includes(e.target.value.toLowerCase())
-    //   ) {
-    //     return filtered.push(item);
-    //   }
-    //   return [];
-    // });
-    const filtered = items.filter((item) =>
-      item.title.toLowerCase().includes(e.target.value.toLowerCase())
-    );
+    const filtered = [];
+    items.filter((item) => {
+      if (item.title.toLowerCase().includes(e.target.value.toLowerCase())) {
+        return filtered.push(item);
+      } else if (item.date.toString().includes(e.target.value)) {
+        return filtered.push(item);
+      } else if (item.budget.toString().includes(e.target.value)) {
+        return filtered.push(item);
+      } else if (
+        item.address.toLowerCase().includes(e.target.value.toLowerCase())
+      ) {
+        return filtered.push(item);
+      }
+      return [];
+    });
+    // const filtered = items.filter((item) => item.title.toLowerCase().includes(e.target.value.toLowerCase());
     filtered.length > 0 && setItems(filtered);
   }, 500);
 
   const handleDelete = (id) => {
-    console.log("Id from child :", id);
     swal({
       title: "Delete!",
       text: "Are you sure you want to delete this thread!",
@@ -157,6 +158,8 @@ const Dashboard = () => {
             handleDoubleClick={handleDoubleClickEvent}
             isEnableActions={enableAction}
             setEnableActions={setEnableAction}
+            isChartViewEnable={isChartViewEnable}
+            setIsChartViewEnable={setIsChartViewEnable}
             handleDeleteItem={handleDelete}
           />
         )}
@@ -195,6 +198,8 @@ const ExpenseList = ({
   isEnableActions,
   setEnableActions,
   handleDeleteItem,
+  isChartViewEnable,
+  setIsChartViewEnable,
 }) => {
   items = items.filter(
     (item) =>
@@ -203,6 +208,26 @@ const ExpenseList = ({
   );
   let total = items.map((item) => item.budget);
   total = sum(total);
+  const daysInMonth = moment(currentMonth, "MMM").daysInMonth();
+  let monthlyDate = Array.from(Array(daysInMonth + 1).keys());
+  let chartDayValues = [];
+  monthlyDate.forEach((ele) => {
+    const formattedEle = ele >= 10 ? String(ele) : `0${ele}`;
+    const isMatched = items.filter(
+      (item) => formattedEle === moment(item.date, "YYYY-MM-DD").format("DD")
+    );
+    // const isMatched2 = items.filter((item) => formattedEle === (moment(item.date, "YYYY-MM-DD").format("DD") >= 10 ? moment(item.date, "YYYY-MM-DD").format("DD") : moment(item.date, "YYYY-MM-DD").format("DDD")));
+    if (isMatched.length > 0) {
+      let total = 0;
+      isMatched.map((el) => el.budget).forEach((s) => (total += Number(s)));
+      chartDayValues.push(total);
+    } else {
+      chartDayValues.push(0);
+    }
+  });
+
+  monthlyDate.shift();
+  chartDayValues.shift();
   return (
     <>
       <Box className="d-flex justify-content-between align-items-center">
@@ -222,8 +247,14 @@ const ExpenseList = ({
             </InputAdornment>
           }
         />
+        <Tooltip title="Open Chart View">
+          <Button onClick={() => setIsChartViewEnable(!isChartViewEnable)}>
+            <BarChartIcon />
+          </Button>
+        </Tooltip>
         <Tooltip title={isEnableActions ? "Disable Action" : "Enable Action"}>
           <Switch
+            disabled={isChartViewEnable}
             checked={isEnableActions}
             onChange={() => setEnableActions(!isEnableActions)}
           />
@@ -240,7 +271,13 @@ const ExpenseList = ({
           </span>
         </Typography>
       </Box>
-      {items.length > 0 ? (
+      {isChartViewEnable ? (
+        <ChartView
+          daysInMonth={monthlyDate}
+          currentMonth={currentMonth}
+          chartDataArr={chartDayValues}
+        />
+      ) : items.length > 0 ? (
         items.map(({ _id, title, address, date, budget }) => {
           return (
             <Card
@@ -253,11 +290,14 @@ const ExpenseList = ({
                 <div className="flex-grow-1">
                   <Typography variant="body1" color="primary">
                     {title.includes(" ")
-                      ? title.split(" ")[0] + " " + title.split(" ")[1]
+                      ? `${title.split(" ")[0]} ${title.split(" ")[1]}
+                        ${title.split(" ")[2] ? title.split(" ")[2] : ""}`
                       : title}
                   </Typography>
                   <Typography variant="body2">
-                    {address.substr(0, 22)}...
+                    {address.length > 22
+                      ? `${address.substr(0, 22)}...`
+                      : address}
                   </Typography>
                 </div>
                 <div style={{ textAlign: "right" }}>
@@ -284,11 +324,64 @@ const ExpenseList = ({
           );
         })
       ) : (
-        <Card key="no_item" className="data-not-found">
-          <Box className="box-container">No data found</Box>
-        </Card>
+        <Typography variant="h6" className="data-not-found">
+          {`Data not available in ${currentMonth} Month`}
+        </Typography>
       )}
     </>
+  );
+};
+
+const ChartView = ({ daysInMonth, currentMonth, chartDataArr }) => {
+  const chartData = {
+    labels: daysInMonth,
+    datasets: [
+      {
+        axis: "y",
+        label: "Expense report ",
+        data: chartDataArr,
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(155, 159, 64, 0.2)",
+          "rgba(255, 205, 146, 0.2)",
+          "rgba(75, 192, 192, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(153, 102, 255, 0.2)",
+          "rgba(201, 003, 207, 0.2)",
+        ],
+        borderColor: [
+          "rgb(255, 99, 132)",
+          "rgb(155, 159, 64)",
+          "rgb(255, 205, 86)",
+          "rgb(75, 192, 192)",
+          "rgb(54, 162, 235)",
+          "rgb(153, 102, 255)",
+          "rgb(201, 003, 207)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+  return (
+    <Bar
+      data={chartData}
+      options={{
+        indexAxis: "y",
+        responsive: true,
+        aspectRatio: 1 / 1.7,
+        barThickness: 16,
+        plugins: {
+          title: { display: true, text: `${currentMonth}'s expense report` },
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (item) =>
+                `${item.dataset.label}: ${item.formattedValue} Rs`,
+            },
+          },
+        },
+      }}
+    />
   );
 };
 

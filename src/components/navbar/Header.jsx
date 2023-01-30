@@ -4,14 +4,28 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { Typography } from "@mui/material";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "../../service";
 import Axios from "axios";
+import DisplaySettingsIcon from "@mui/icons-material/DisplaySettings";
+import { SwatchesPicker } from "react-color";
+import { Tooltip } from "@mui/material";
 
-export default function Header() {
+export default function Header(props) {
   const navigate = useNavigate();
+  const popover = React.useRef();
+  const InitColor = localStorage.getItem("themeColor");
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [color, setColor] = React.useState(InitColor ? InitColor : "#fff");
+
+  const handleColorChange = (e) => {
+    setColor(e.hex);
+    localStorage.setItem("themeColor", e.hex);
+    props.fromChild(e.hex);
+    setIsOpen(false);
+  };
+
   const handleMenu = () => {
     swal({
       title: "Log out!",
@@ -39,18 +53,49 @@ export default function Header() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: "transparent" }}>
+      <AppBar
+        position="static"
+        // color="inherit"
+        sx={{ backgroundColor: "transparent" }}
+      >
         {localStorage.getItem("loggedIn") && (
-          <Toolbar>
-            <Typography sx={{ flexGrow: 1 }} />
+          <Toolbar className="d-flex justify-content-between">
+            <Tooltip title="Change theme color">
+              <IconButton
+                size="large"
+                onClick={() => setIsOpen(!isOpen)}
+                color="primary"
+              >
+                <DisplaySettingsIcon />
+              </IconButton>
+            </Tooltip>
             <IconButton
               size="large"
               onClick={() => handleMenu()}
-              color="inherit"
+              color="primary"
             >
-              <LogoutIcon color="primary" />
+              <LogoutIcon />
             </IconButton>
           </Toolbar>
+        )}
+
+        {isOpen && (
+          <Box
+            ref={popover}
+            sx={{
+              position: "absolute",
+              top: "25%",
+              right: "38%",
+              zIndex: 1,
+            }}
+          >
+            <SwatchesPicker
+              width={350}
+              height={"auto"}
+              color={color}
+              onChangeComplete={handleColorChange}
+            />
+          </Box>
         )}
       </AppBar>
     </Box>
