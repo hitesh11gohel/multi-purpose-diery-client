@@ -5,7 +5,7 @@ import React from "react";
 const Footer = () => {
   return (
     <Box className="footer-container">
-      <Typography variant="body2" color="primary">
+      <Typography variant="body2" color="primary" sx={{ fontWeight: 700 }}>
         &#169;herry2023
       </Typography>
     </Box>

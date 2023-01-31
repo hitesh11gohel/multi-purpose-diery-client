@@ -80,7 +80,16 @@ const ExpenseDetails = () => {
       {Object.keys(details).length > 0 ? (
         <div className="m-4">
           <div className={`d-flex justify-content-between align-items-center`}>
-            <Button variant="outlined" onClick={() => navigate("/")}>
+            <Button
+              variant="outlined"
+              onClick={() => navigate("/")}
+              sx={{
+                backgroundColor:
+                  localStorage.getItem("themeColor") === "#ffffff"
+                    ? "rgba(0, 0, 0, 0.2)"
+                    : "transparent",
+              }}
+            >
               <ArrowBackIosNewIcon />
             </Button>
             <Tooltip
@@ -89,6 +98,12 @@ const ExpenseDetails = () => {
               <Button
                 variant="outlined"
                 onClick={() => setEnableActions(!enableActions)}
+                sx={{
+                  backgroundColor:
+                    localStorage.getItem("themeColor") === "#ffffff"
+                      ? "rgba(0, 0, 0, 0.2)"
+                      : "transparent",
+                }}
               >
                 <EditIcon />
               </Button>

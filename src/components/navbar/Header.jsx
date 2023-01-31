@@ -57,7 +57,13 @@ export default function Header(props) {
       <AppBar
         position="static"
         // color="inherit"
-        sx={{ backgroundColor: "rgba(255, 255, 255, 0.3)" }}
+        // sx={{ backgroundColor: "rgba(255, 255, 255, 0.3)" }}
+        sx={{
+          backgroundColor:
+            localStorage.getItem("themeColor") === "#ffffff"
+              ? "rgba(0, 0, 0, 0.2)"
+              : "rgba(255, 255, 255, 0.8)",
+        }}
       >
         {localStorage.getItem("loggedIn") && (
           <Toolbar className="d-flex justify-content-between">

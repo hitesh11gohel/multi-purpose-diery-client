@@ -89,7 +89,15 @@ export default function AddContent(props) {
 
       <Dialog open={open} onClose={handleClose} scroll="body">
         <form onSubmit={handleSubmit(onSubmit)} className="modal-container">
-          <DialogTitle color="primary">Add Item</DialogTitle>
+          <DialogTitle
+            color={
+              localStorage.getItem("themeColor") === "#ffffff"
+                ? "#000"
+                : "primary"
+            }
+          >
+            Add Item
+          </DialogTitle>
           <DialogContent>
             {/* Title */}
             <Box className="input-box">

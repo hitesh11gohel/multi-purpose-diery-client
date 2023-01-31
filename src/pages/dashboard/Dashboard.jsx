@@ -193,6 +193,12 @@ const MonthView = (props) => {
       <Card
         key={i}
         className="card month-view"
+        sx={{
+          backgroundColor:
+            localStorage.getItem("themeColor") === "#ffffff"
+              ? "rgba(0, 0, 0, 0.2)"
+              : "rgba(255, 255, 255, 0.8)",
+        }}
         onClick={() => sendToParent(item.month)}
       >
         <Box sx={{ textAlign: "center", padding: "1rem" }}>
@@ -246,7 +252,10 @@ const ExpenseList = ({
   chartDayValues.shift();
   return (
     <>
-      <Box className="d-flex justify-content-between align-items-center">
+      <Box
+        className="d-flex justify-content-between align-items-center"
+        sx={{ backgroundColor: localStorage.getItem("themeColor") === "#ffffff" ? "rgba(0, 0, 0, 0.2)" : "transparent" }}
+      >
         <Button onClick={() => clearCurrentMonth("")}>
           <ArrowBackIosNewIcon />
         </Button>
@@ -276,7 +285,7 @@ const ExpenseList = ({
           />
         </Tooltip>
       </Box>
-      <Box className="d-flex justify-content-between align-items-center bg-light py-2">
+      <Box className="d-flex justify-content-between align-items-center bg-light py-2 mt-2">
         <Typography variant="body1">
           <span className="mx-2">Total expense :</span>
         </Typography>
@@ -299,6 +308,12 @@ const ExpenseList = ({
             <Card
               key={_id}
               className="card"
+              sx={{
+                backgroundColor:
+                  localStorage.getItem("themeColor") === "#ffffff"
+                    ? "rgba(0, 0, 0, 0.2)"
+                    : "rgba(255, 255, 255, 0.8)",
+              }}
               onDoubleClick={() => handleDoubleClick(_id)}
             >
               <Box className="box-container">
@@ -328,7 +343,7 @@ const ExpenseList = ({
                       : address}
                   </Typography>
                 </div>
-                <div style={{ textAlign: "right" }}>
+                <div style={{textAlign: "right" }}>
                   <Typography variant="body2">{date}</Typography>
                   <Typography variant="body2">
                     <CurrencyRupeeIcon sx={{ width: "16px" }} />
