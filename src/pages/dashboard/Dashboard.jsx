@@ -144,7 +144,23 @@ const Dashboard = () => {
   };
 
   return (
-    <Box className="dashboard-container" id="scroller">
+    <Box
+      id="scroller"
+      className={`dashboard-container`}
+      sx={{
+        "&::-webkit-scrollbar": {
+          width: "6px",
+          backgroundColor: "#f5f5f5",
+        },
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: "#f5f5f5",
+          webkitBoxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: localStorage.getItem("themeColor") ?? "#000",
+        },
+      }}
+    >
       <div style={{ margin: "1rem" }}>
         {!currentMonth && (
           <MonthView months={months} fromChild={clearCurrentMonthValue} />
@@ -286,7 +302,19 @@ const ExpenseList = ({
               onDoubleClick={() => handleDoubleClick(_id)}
             >
               <Box className="box-container">
-                <Avatar sx={{ mr: 2 }}>{title.charAt(0)}</Avatar>
+                <Avatar
+                  sx={{
+                    mr: 2,
+                    bgcolor: localStorage.getItem("themeColor"),
+                    filter: "opacity(0.5)",
+                    color:
+                      localStorage.getItem("themeColor") === "#ffffff"
+                        ? "red"
+                        : "#ffffff",
+                  }}
+                >
+                  {title.charAt(0)}
+                </Avatar>
                 <div className="flex-grow-1">
                   <Typography variant="body1" color="primary">
                     {title.includes(" ")
@@ -303,7 +331,7 @@ const ExpenseList = ({
                 <div style={{ textAlign: "right" }}>
                   <Typography variant="body2">{date}</Typography>
                   <Typography variant="body2">
-                    <CurrencyRupeeIcon sx={{ width: "14px" }} />
+                    <CurrencyRupeeIcon sx={{ width: "16px" }} />
                     <span>{budget} </span>
                   </Typography>
                 </div>

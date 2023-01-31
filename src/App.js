@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Navbar from "./components/navbar/Header";
+import Footer from "./components/footer/Footer";
 import Login from "./auth/login/Login";
 import Register from "./auth/register/Regsiter";
 import Protected from "./auth/Protected";
@@ -16,6 +17,12 @@ function App() {
   const themeColorFromChild = (value) => setThemeColor(value);
   const theme = createTheme({
     palette: { primary: { main: themeColor }, secondary: { main: "#2a9461" } },
+    typography: {
+      fontFamily: "Alegreya Sans SC",
+      h6: { fontSize: "24px" },
+      body1: { fontSize: "18px" },
+      body2: { fontSize: "16px" },
+    },
   });
 
   return (
@@ -34,6 +41,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
+        <Footer />
       </Box>
     </ThemeProvider>
   );

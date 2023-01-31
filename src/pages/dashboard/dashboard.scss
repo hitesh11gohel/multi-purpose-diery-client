@@ -2,7 +2,8 @@ $primary-color: #1976d2;
 $secondary-color: #ffc107;
 
 .dashboard-container {
-  height: calc(99vh - 64px);
+  // height: calc(99vh - 55px);
+  height: calc(99vh - 78px);
   overflow-y: auto;
 
   .floating {
@@ -37,6 +38,7 @@ $secondary-color: #ffc107;
     margin: 8px 0;
     height: 6rem;
     justify-content: center;
+    background-color: rgba(255, 255, 255, 0.3);
 
     .box-container {
       padding: 1rem;
@@ -57,7 +59,12 @@ $secondary-color: #ffc107;
   canvas {
     background-color: #f8f9fa;
     margin-top: 8px;
+    border-radius: 4px;
     padding: 8px;
+  }
+
+  @media only screen and (max-width: 425px) {
+    height: calc(99vh - 73px);
   }
 
   @media only screen and (min-width: 786px) {
@@ -82,17 +89,17 @@ $secondary-color: #ffc107;
 }
 
 /* scroller */
-#scroller::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-  background-color: #f5f5f5;
-}
+// #scroller::-webkit-scrollbar-track {
+//   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+//   background-color: #f5f5f5;
+// }
 
-#scroller::-webkit-scrollbar {
-  width: 6px;
-  background-color: #f5f5f5;
-}
+// #scroller::-webkit-scrollbar {
+//   width: 6px;
+//   background-color: #f5f5f5;
+// }
 
-#scroller::-webkit-scrollbar-thumb {
-  // background-color: $primary-color;
-  background-color: #000;
-}
+// #scroller::-webkit-scrollbar-thumb {
+//   // background-color: $primary-color;
+//   background-color: #000;
+// }

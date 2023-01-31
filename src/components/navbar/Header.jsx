@@ -17,7 +17,7 @@ export default function Header(props) {
   const popover = React.useRef();
   const InitColor = localStorage.getItem("themeColor");
   const [isOpen, setIsOpen] = React.useState(false);
-  const [color, setColor] = React.useState(InitColor ? InitColor : "#fff");
+  const [color, setColor] = React.useState(InitColor ? InitColor : "#000");
 
   const handleColorChange = (e) => {
     setColor(e.hex);
@@ -51,12 +51,13 @@ export default function Header(props) {
     });
   };
 
+  React.useEffect(() => localStorage.setItem("themeColor", color), [color]);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
         // color="inherit"
-        sx={{ backgroundColor: "transparent" }}
+        sx={{ backgroundColor: "rgba(255, 255, 255, 0.3)" }}
       >
         {localStorage.getItem("loggedIn") && (
           <Toolbar className="d-flex justify-content-between">
@@ -80,17 +81,9 @@ export default function Header(props) {
         )}
 
         {isOpen && (
-          <Box
-            ref={popover}
-            sx={{
-              position: "absolute",
-              top: "25%",
-              right: "38%",
-              zIndex: 1,
-            }}
-          >
+          <Box ref={popover} className="colorPicker">
             <SwatchesPicker
-              width={350}
+              width={275}
               height={"auto"}
               color={color}
               onChangeComplete={handleColorChange}

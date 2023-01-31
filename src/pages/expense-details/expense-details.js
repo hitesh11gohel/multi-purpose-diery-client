@@ -22,6 +22,7 @@ import Axios from "axios";
 import swal from "sweetalert";
 import { useForm } from "react-hook-form";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
+import noImage from "../../../src/assets/noImage.png";
 
 const ExpenseDetails = () => {
   const { state } = useLocation();
@@ -75,7 +76,7 @@ const ExpenseDetails = () => {
   };
 
   return (
-    <>
+    <Box className="expense-details-container">
       {Object.keys(details).length > 0 ? (
         <div className="m-4">
           <div className={`d-flex justify-content-between align-items-center`}>
@@ -192,6 +193,20 @@ const ExpenseDetails = () => {
                     {...register("address", { value: details.address })}
                   />
                 </Grid>
+
+                {/* Profile */}
+                <Grid item xs={4}>
+                  Profile :
+                </Grid>
+                <Grid item xs={8}>
+                  <img
+                    src={noImage}
+                    alt="..."
+                    name="image"
+                    width={100}
+                    height={100}
+                  />
+                </Grid>
               </Grid>
               <Box
                 className={`${
@@ -201,7 +216,6 @@ const ExpenseDetails = () => {
                 <Button
                   variant="outlined"
                   color="success"
-                  // onClick={() => handleUpdate(details._id)}
                   type="submit"
                   className="mx-2"
                 >
@@ -221,11 +235,17 @@ const ExpenseDetails = () => {
           </form>
         </div>
       ) : (
-        <Button variant="outlined" onClick={() => navigate("/")}>
-          No Data Found
-        </Button>
+        <div className="no-data-found">
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => navigate("/")}
+          >
+            No Data Found
+          </Button>
+        </div>
       )}
-    </>
+    </Box>
   );
 };
 

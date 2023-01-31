@@ -1,4 +1,6 @@
-.form-container {
+.expense-details-container {
+    height: calc(100vh - 112px);
+
     .input-box {
         margin: 2rem 0;
     }
@@ -8,5 +10,23 @@
         margin-bottom: 0;
         text-align: left;
         font-size: 12px;
+    }
+
+    .no-data-found {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        height: calc(100vh - 65px);
+    }
+
+    @media only screen and (max-width: 425px) {
+        height: calc(99vh - 96px);
+    }
+
+    @media only screen and (max-width: 375px) and (max-height: 667px) {
+        form {
+            height: 500px;
+            overflow-y: auto;
+        }
     }
 }

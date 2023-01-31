@@ -12,7 +12,7 @@ const ErrorPage = () => {
         component={"img"}
         src={NotFound}
         width={"100%"}
-        height={400}
+        height={300}
         alt="page-not-found"
       ></Box>
       <Button variant="outlined" className="mt-4" onClick={() => navigate("/")}>
