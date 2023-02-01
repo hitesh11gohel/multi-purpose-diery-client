@@ -65,7 +65,7 @@ const Dashboard = () => {
         }
       })
       .catch((e) => {
-        console.log("Error :", e);
+        console.log("fetchAllRecords Error :", e);
         showDialog(true);
       });
   };
@@ -367,7 +367,7 @@ const ExpenseList = ({
           );
         })
       ) : (
-        <Typography variant="h6" className="data-not-found">
+        <Typography variant="h6" className="data-not-found" color="primary">
           {`Data not available in ${currentMonth} Month`}
         </Typography>
       )}

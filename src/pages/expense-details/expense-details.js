@@ -215,11 +215,10 @@ const ExpenseDetails = () => {
                 </Grid>
                 <Grid item xs={8}>
                   <img
-                    src={noImage}
+                    src={details?.image ?? noImage}
                     alt="..."
                     name="image"
-                    width={100}
-                    height={100}
+                    className="expense-image"
                   />
                 </Grid>
               </Grid>

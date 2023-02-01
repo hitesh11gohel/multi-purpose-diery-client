@@ -19,6 +19,12 @@
         height: calc(100vh - 65px);
     }
 
+    .expense-image {
+        width: auto;
+        height: 150px;
+        object-fit: cover;
+    }
+
     @media only screen and (max-width: 425px) {
         height: calc(99vh - 96px);
     }

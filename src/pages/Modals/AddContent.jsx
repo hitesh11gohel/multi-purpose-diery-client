@@ -48,12 +48,16 @@ export default function AddContent(props) {
   //   setAge(event.target.value);
   // };
 
-  const onSubmit = (formData) => {
-    if (formData.image?.length > 0) {
-      formData.image = URL.createObjectURL(formData.image[0]);
-    } else {
-      formData.image = "";
-    }
+  const onSubmit = (data) => {
+    const formData = new FormData();
+    formData.append("address", data.address);
+    formData.append("budget", data.budget);
+    formData.append("date", data.date);
+    formData.append("description", data.description);
+    formData.append("image", data.image[0]);
+    formData.append("paymentType", data.paymentType);
+    formData.append("title", data.title);
+
     Axios({
       url: addExpense,
       method: "POST",
