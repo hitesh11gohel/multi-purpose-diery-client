@@ -14,7 +14,7 @@ import {
 import "./dashboard.scss";
 import AddContent from "../Modals/AddContent";
 import Axios from "axios";
-import { getExpenses, getExpense, deleteExpense } from "../../service";
+import { getExpenses, getExpense, deleteExpense, signOut } from "../../service";
 import SearchIcon from "@mui/icons-material/Search";
 import { debounce } from "lodash";
 import moment from "moment";
@@ -36,6 +36,7 @@ const Dashboard = () => {
   const [currentMonth, setCurrentMonth] = useState("");
   const [isChartViewEnable, setIsChartViewEnable] = useState(false);
   const [enableAction, setEnableAction] = useState(false);
+  // const [cookies, setCookie] = useCookies(['connect.sid']);
 
   useEffect(() => {
     if (localStorage.getItem("loggedIn")) fetchAllRecords();
@@ -77,8 +78,11 @@ const Dashboard = () => {
       icon: "error",
       button: "Ok",
       dangerMode: true,
+      closeOnClickOutside: false,
+      closeOnEsc: false,
     }).then((out) => {
       if (out && error) {
+        Axios.post(signOut);
         localStorage.removeItem("loggedIn");
         navigate("/login");
       }
@@ -254,7 +258,12 @@ const ExpenseList = ({
     <>
       <Box
         className="d-flex justify-content-between align-items-center"
-        sx={{ backgroundColor: localStorage.getItem("themeColor") === "#ffffff" ? "rgba(0, 0, 0, 0.2)" : "transparent" }}
+        sx={{
+          backgroundColor:
+            localStorage.getItem("themeColor") === "#ffffff"
+              ? "rgba(0, 0, 0, 0.2)"
+              : "transparent",
+        }}
       >
         <Button onClick={() => clearCurrentMonth("")}>
           <ArrowBackIosNewIcon />
@@ -343,7 +352,7 @@ const ExpenseList = ({
                       : address}
                   </Typography>
                 </div>
-                <div style={{textAlign: "right" }}>
+                <div style={{ textAlign: "right" }}>
                   <Typography variant="body2">{date}</Typography>
                   <Typography variant="body2">
                     <CurrencyRupeeIcon sx={{ width: "16px" }} />
