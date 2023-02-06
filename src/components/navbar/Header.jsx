@@ -6,11 +6,21 @@ import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
-import { signOut } from "../../service";
-import Axios from "axios";
 import DisplaySettingsIcon from "@mui/icons-material/DisplaySettings";
 import { SwatchesPicker } from "react-color";
-import { Tooltip } from "@mui/material";
+import {
+  Button,
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 
 export default function Header(props) {
   const navigate = useNavigate();
@@ -18,6 +28,12 @@ export default function Header(props) {
   const InitColor = localStorage.getItem("themeColor");
   const [isOpen, setIsOpen] = React.useState(false);
   const [color, setColor] = React.useState(InitColor ? InitColor : "#000");
+  const [drawerState, setDrawerState] = React.useState(false);
+  const currentTheme = InitColor === "#ffffff" ? "#000" : InitColor;
+  const ThemeBackGround =
+    InitColor === "#ffffff" ? "rgba(0, 0, 0, 0.2)" : "rgba(255, 255, 255, 0.8)";
+
+  const toggleDrawer = (open) => (event) => setDrawerState(open);
 
   const handleColorChange = (e) => {
     setColor(e.hex);
@@ -35,47 +51,71 @@ export default function Header(props) {
       dangerMode: true,
     }).then((out) => {
       if (out) {
-        Axios({ url: signOut, method: "POST" })
-          .then(() => {
-            navigate("/login");
-            localStorage.removeItem("loggedIn");
-          })
-          .catch(() => {
-            swal({
-              title: "Oops!",
-              text: "Something went wrong!",
-              icon: "warning",
-            });
-          });
+        navigate("/login");
+        localStorage.removeItem("loggedIn");
       }
     });
   };
 
   React.useEffect(() => localStorage.setItem("themeColor", color), [color]);
+
+  const list = () => (
+    <Box
+      sx={{ width: 300 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon sx={{ color: currentTheme }}>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Profile"} sx={{ color: currentTheme }} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => setIsOpen(!isOpen)}>
+            <ListItemIcon sx={{ color: currentTheme }}>
+              <DisplaySettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Theme"} sx={{ color: currentTheme }} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton>
+            <ListItemIcon sx={{ color: currentTheme }}>
+              <DonutLargeIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Generate Chart"}
+              sx={{ color: currentTheme }}
+            />
+          </ListItemButton>
+        </ListItem>
+        <Divider />
+      </List>
+    </Box>
+  );
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar
-        position="static"
-        // color="inherit"
-        // sx={{ backgroundColor: "rgba(255, 255, 255, 0.3)" }}
-        sx={{
-          backgroundColor:
-            localStorage.getItem("themeColor") === "#ffffff"
-              ? "rgba(0, 0, 0, 0.2)"
-              : "rgba(255, 255, 255, 0.8)",
-        }}
-      >
+      <AppBar position="static" sx={{ backgroundColor: ThemeBackGround }}>
+        <Drawer
+          anchor={"left"}
+          open={drawerState}
+          onClose={toggleDrawer(false)}
+        >
+          {list()}
+        </Drawer>
+
         {localStorage.getItem("loggedIn") && (
           <Toolbar className="d-flex justify-content-between">
-            <Tooltip title="Change theme color">
-              <IconButton
-                size="large"
-                onClick={() => setIsOpen(!isOpen)}
-                color="primary"
-              >
-                <DisplaySettingsIcon />
-              </IconButton>
-            </Tooltip>
+            <Button onClick={toggleDrawer(true)}>
+              <MenuIcon />
+            </Button>
             <IconButton
               size="large"
               onClick={() => handleMenu()}

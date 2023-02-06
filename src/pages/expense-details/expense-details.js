@@ -29,6 +29,11 @@ const ExpenseDetails = () => {
   const navigate = useNavigate();
   const [details, setDetails] = useState({});
   const [enableActions, setEnableActions] = useState(false);
+  const user = JSON.parse(localStorage.getItem("loggedIn"));
+  const headerObj = {
+    "Access-Control-Allow-Headers": "x-access-token",
+    "x-access-token": user.token,
+  };
 
   useEffect(() => {
     state?.expense && setDetails(state.expense);
@@ -43,7 +48,11 @@ const ExpenseDetails = () => {
       dangerMode: true,
     }).then((out) => {
       if (out) {
-        Axios.delete(deleteExpense + "/" + id)
+        Axios({
+          method: "DELETE",
+          url: deleteExpense + "/" + id,
+          headers: headerObj,
+        })
           .then(() => navigate("/"))
           .catch(() => {
             swal({

@@ -36,7 +36,12 @@ const Dashboard = () => {
   const [currentMonth, setCurrentMonth] = useState("");
   const [isChartViewEnable, setIsChartViewEnable] = useState(false);
   const [enableAction, setEnableAction] = useState(false);
-  // const [cookies, setCookie] = useCookies(['connect.sid']);
+  const InitColor = localStorage.getItem("themeColor");
+  const user = JSON.parse(localStorage.getItem("loggedIn"));
+  const headerObj = {
+    "Access-Control-Allow-Headers": "x-access-token",
+    "x-access-token": user.token,
+  };
 
   useEffect(() => {
     if (localStorage.getItem("loggedIn")) fetchAllRecords();
@@ -46,7 +51,7 @@ const Dashboard = () => {
   const handleChildData = () => fetchAllRecords();
   const clearCurrentMonthValue = (value) => setCurrentMonth(value);
   const handleDoubleClickEvent = (value) => {
-    Axios({ url: `${getExpense}/${value}`, method: "GET" })
+    Axios({ url: `${getExpense}/${value}`, method: "GET", headers: headerObj })
       .then((res) => {
         navigate(`/expense-detail/${value}`, {
           state: { expense: res.data.data },
@@ -56,7 +61,7 @@ const Dashboard = () => {
   };
 
   const fetchAllRecords = () => {
-    Axios.get(getExpenses)
+    Axios({ method: "GET", url: getExpenses, headers: headerObj })
       .then((res) => {
         if (res.status === 200) {
           setItems(res.data.data);
@@ -82,7 +87,6 @@ const Dashboard = () => {
       closeOnEsc: false,
     }).then((out) => {
       if (out && error) {
-        Axios.post(signOut);
         localStorage.removeItem("loggedIn");
         navigate("/login");
       }
@@ -134,7 +138,11 @@ const Dashboard = () => {
       dangerMode: true,
     }).then((out) => {
       if (out) {
-        Axios.delete(deleteExpense + "/" + id)
+        Axios({
+          method: "DELETE",
+          url: `${deleteExpense}/${id}`,
+          headers: headerObj,
+        })
           .then(() => fetchAllRecords())
           .catch(() => {
             swal({
@@ -161,13 +169,17 @@ const Dashboard = () => {
           webkitBoxShadow: "inset 0 0 6px rgba(0, 0, 0, 0.3)",
         },
         "&::-webkit-scrollbar-thumb": {
-          backgroundColor: localStorage.getItem("themeColor") ?? "#000",
+          backgroundColor: InitColor ?? "#000",
         },
       }}
     >
       <div style={{ margin: "1rem" }}>
         {!currentMonth && (
-          <MonthView months={months} fromChild={clearCurrentMonthValue} />
+          <MonthView
+            months={months}
+            fromChild={clearCurrentMonthValue}
+            InitColor={InitColor}
+          />
         )}
         {currentMonth && (
           <ExpenseList
@@ -181,6 +193,7 @@ const Dashboard = () => {
             isChartViewEnable={isChartViewEnable}
             setIsChartViewEnable={setIsChartViewEnable}
             handleDeleteItem={handleDelete}
+            InitColor={InitColor}
           />
         )}
         <AddContent fetchRecords={handleChildData} />
@@ -190,19 +203,18 @@ const Dashboard = () => {
 };
 
 const MonthView = (props) => {
-  const { months } = props;
+  const { months, InitColor } = props;
   const sendToParent = (month) => props.fromChild(month);
   return months.map((item, i) => {
+    const bgColor =
+      InitColor === "#ffffff"
+        ? "rgba(0, 0, 0, 0.2)"
+        : "rgba(255, 255, 255, 0.8)";
     return (
       <Card
         key={i}
         className="card month-view"
-        sx={{
-          backgroundColor:
-            localStorage.getItem("themeColor") === "#ffffff"
-              ? "rgba(0, 0, 0, 0.2)"
-              : "rgba(255, 255, 255, 0.8)",
-        }}
+        sx={{ backgroundColor: bgColor }}
         onClick={() => sendToParent(item.month)}
       >
         <Box sx={{ textAlign: "center", padding: "1rem" }}>
@@ -226,6 +238,7 @@ const ExpenseList = ({
   handleDeleteItem,
   isChartViewEnable,
   setIsChartViewEnable,
+  InitColor,
 }) => {
   items = items.filter(
     (item) =>
@@ -260,9 +273,7 @@ const ExpenseList = ({
         className="d-flex justify-content-between align-items-center"
         sx={{
           backgroundColor:
-            localStorage.getItem("themeColor") === "#ffffff"
-              ? "rgba(0, 0, 0, 0.2)"
-              : "transparent",
+            InitColor === "#ffffff" ? "rgba(0, 0, 0, 0.2)" : "transparent",
         }}
       >
         <Button onClick={() => clearCurrentMonth("")}>
@@ -319,7 +330,7 @@ const ExpenseList = ({
               className="card"
               sx={{
                 backgroundColor:
-                  localStorage.getItem("themeColor") === "#ffffff"
+                  InitColor === "#ffffff"
                     ? "rgba(0, 0, 0, 0.2)"
                     : "rgba(255, 255, 255, 0.8)",
               }}
@@ -329,12 +340,9 @@ const ExpenseList = ({
                 <Avatar
                   sx={{
                     mr: 2,
-                    bgcolor: localStorage.getItem("themeColor"),
+                    bgcolor: InitColor,
                     filter: "opacity(0.5)",
-                    color:
-                      localStorage.getItem("themeColor") === "#ffffff"
-                        ? "red"
-                        : "#ffffff",
+                    color: InitColor === "#ffffff" ? "red" : "#ffffff",
                   }}
                 >
                   {title.charAt(0)}
