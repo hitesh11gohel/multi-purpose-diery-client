@@ -14,7 +14,7 @@ import {
 import "./dashboard.scss";
 import AddContent from "../Modals/AddContent";
 import Axios from "axios";
-import { getExpenses, getExpense, deleteExpense, signOut } from "../../service";
+import { getExpenses, getExpense, deleteExpense } from "../../service";
 import SearchIcon from "@mui/icons-material/Search";
 import { debounce } from "lodash";
 import moment from "moment";
