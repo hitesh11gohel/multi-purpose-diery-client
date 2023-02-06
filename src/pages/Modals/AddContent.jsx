@@ -28,6 +28,11 @@ import { addExpense } from "../../service";
 
 export default function AddContent(props) {
   const [open, setOpen] = React.useState(false);
+  const user = JSON.parse(localStorage.getItem("loggedIn"));
+  const headerObj = {
+    "Access-Control-Allow-Headers": "x-access-token",
+    "x-access-token": user.token,
+  };
 
   const handleClickOpen = () => setOpen(true);
   const handleClose = () => {
@@ -62,6 +67,7 @@ export default function AddContent(props) {
       url: addExpense,
       method: "POST",
       data: formData,
+      headers: headerObj,
     })
       .then((res) => {
         if (res.status === 201) {
