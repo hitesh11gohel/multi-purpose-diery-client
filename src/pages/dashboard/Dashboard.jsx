@@ -40,7 +40,7 @@ const Dashboard = () => {
   const user = JSON.parse(localStorage.getItem("loggedIn"));
   const headerObj = {
     "Access-Control-Allow-Headers": "x-access-token",
-    "x-access-token": user.token,
+    "x-access-token": user?.token,
   };
 
   useEffect(() => {
