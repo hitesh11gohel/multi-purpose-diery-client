@@ -1,0 +1,14 @@
+.profile-container {
+    height: calc(100vh - 120px);
+
+    @media only screen and (max-width: 425px) {
+        height: calc(99vh - 104px);
+    }
+
+    // @media only screen and (max-width: 375px) and (max-height: 667px) {
+    //     form {
+    //         height: 500px;
+    //         overflow-y: auto;
+    //     }
+    // }
+}

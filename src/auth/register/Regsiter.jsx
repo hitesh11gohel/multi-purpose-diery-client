@@ -61,7 +61,7 @@ const Register = () => {
           <Box className="input-box">
             <Input
               name="name"
-              placeholder="Helly Cooper"
+              placeholder="User"
               className="input"
               {...register("name", {
                 required: "Please enter your name ***",
@@ -79,7 +79,7 @@ const Register = () => {
           <Box className="input-box">
             <Input
               name="username"
-              placeholder="Helly11"
+              placeholder="user123"
               className="input"
               {...register("username", {
                 required: "Please enter user name ***",
@@ -99,7 +99,7 @@ const Register = () => {
           <Box className="input-box">
             <Input
               name="email"
-              placeholder="helly@gmail.com"
+              placeholder="user@gmail.com"
               className="input"
               autoComplete="new-password"
               type="email"
@@ -119,7 +119,7 @@ const Register = () => {
           <Box className="input-box">
             <Input
               name="mobile"
-              placeholder="9988776655"
+              placeholder="1234567890"
               className="input"
               type="text"
               {...register("mobile", {

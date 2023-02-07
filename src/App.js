@@ -10,6 +10,8 @@ import Protected from "./auth/Protected";
 import ExpenseDetails from "./pages/expense-details/expense-details";
 import NotFound from "./pages/404/notFound";
 import { Box } from "@mui/material";
+import Profile from "./pages/profile/Profile";
+import DoughnutChart from "./pages/charts/DoughnutChart";
 
 function App() {
   const InitColor = localStorage.getItem("themeColor");
@@ -36,6 +38,14 @@ function App() {
             <Route
               path="expense-detail/:id"
               element={<Protected Component={ExpenseDetails} />}
+            />
+            <Route
+              path="/profile"
+              element={<Protected Component={Profile} />}
+            />
+            <Route
+              path="chart"
+              element={<Protected Component={DoughnutChart} />}
             />
           </Route>
           <Route path="/login" element={<Login />} />

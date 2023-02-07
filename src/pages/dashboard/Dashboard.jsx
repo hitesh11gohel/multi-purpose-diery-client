@@ -2,9 +2,11 @@
 import React, { useEffect, useState } from "react";
 import {
   Avatar,
+  Backdrop,
   Box,
   Button,
   Card,
+  CircularProgress,
   Input,
   InputAdornment,
   Switch,
@@ -36,6 +38,7 @@ const Dashboard = () => {
   const [currentMonth, setCurrentMonth] = useState("");
   const [isChartViewEnable, setIsChartViewEnable] = useState(false);
   const [enableAction, setEnableAction] = useState(false);
+  const [loading, setLoading] = useState(false);
   const InitColor = localStorage.getItem("themeColor");
   const user = JSON.parse(localStorage.getItem("loggedIn"));
   const headerObj = {
@@ -61,9 +64,11 @@ const Dashboard = () => {
   };
 
   const fetchAllRecords = () => {
+    setLoading(true);
     Axios({ method: "GET", url: getExpenses, headers: headerObj })
       .then((res) => {
         if (res.status === 200) {
+          setLoading(false);
           setItems(res.data.data);
           setCloneItems(res.data.data);
         } else {
@@ -77,6 +82,7 @@ const Dashboard = () => {
   };
 
   const showDialog = (error = false) => {
+    localStorage.removeItem("loggedIn");
     swal({
       title: error ? "Oops!" : "Session Expired",
       text: error ? "Something went wrong!" : "Please log in again.",
@@ -87,7 +93,6 @@ const Dashboard = () => {
       closeOnEsc: false,
     }).then((out) => {
       if (out && error) {
-        localStorage.removeItem("loggedIn");
         navigate("/login");
       }
     });
@@ -174,6 +179,12 @@ const Dashboard = () => {
       }}
     >
       <div style={{ margin: "1rem" }}>
+        <Backdrop
+          open={loading}
+          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        >
+          <CircularProgress color="primary" />
+        </Backdrop>
         {!currentMonth && (
           <MonthView
             months={months}

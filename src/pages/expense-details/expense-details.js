@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   Grid,
   Input,
   InputAdornment,
@@ -29,6 +31,7 @@ const ExpenseDetails = () => {
   const navigate = useNavigate();
   const [details, setDetails] = useState({});
   const [enableActions, setEnableActions] = useState(false);
+  const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem("loggedIn"));
   const headerObj = {
     "Access-Control-Allow-Headers": "x-access-token",
@@ -36,7 +39,10 @@ const ExpenseDetails = () => {
   };
 
   useEffect(() => {
-    state?.expense && setDetails(state.expense);
+    if (state?.expense) {
+      setLoading(false);
+      setDetails(state.expense);
+    }
   }, []);
 
   const handleDelete = (id) => {
@@ -86,8 +92,14 @@ const ExpenseDetails = () => {
 
   return (
     <Box className="expense-details-container">
+      <Backdrop
+        open={loading}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <CircularProgress color="primary" />
+      </Backdrop>
       {Object.keys(details).length > 0 ? (
-        <div className="m-4">
+        <div className="m-3">
           <div className={`d-flex justify-content-between align-items-center`}>
             <Button
               variant="outlined"

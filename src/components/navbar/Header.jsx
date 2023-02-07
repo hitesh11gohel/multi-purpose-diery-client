@@ -21,6 +21,7 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
 export default function Header(props) {
   const navigate = useNavigate();
@@ -68,7 +69,16 @@ export default function Header(props) {
     >
       <List>
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton onClick={() => navigate("/")}>
+            <ListItemIcon sx={{ color: currentTheme }}>
+              <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Dashboard"} sx={{ color: currentTheme }} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => navigate("/profile")}>
             <ListItemIcon sx={{ color: currentTheme }}>
               <AccountCircleIcon />
             </ListItemIcon>
@@ -85,7 +95,7 @@ export default function Header(props) {
           </ListItemButton>
         </ListItem>
 
-        <ListItem disablePadding>
+        <ListItem disablePadding onClick={() => navigate("/chart")}>
           <ListItemButton>
             <ListItemIcon sx={{ color: currentTheme }}>
               <DonutLargeIcon />
