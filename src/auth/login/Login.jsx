@@ -104,6 +104,7 @@ const Login = () => {
             sx={{ margin: "1rem 0" }}
             type="submit"
             fullWidth
+            className="text-dark border-dark bg-light"
           >
             Let's go
           </Button>

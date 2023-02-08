@@ -1,9 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
-  Backdrop,
   Box,
   Button,
-  CircularProgress,
   Grid,
   Input,
   InputAdornment,
@@ -11,6 +9,7 @@ import {
   Paper,
   Select,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -31,7 +30,6 @@ const ExpenseDetails = () => {
   const navigate = useNavigate();
   const [details, setDetails] = useState({});
   const [enableActions, setEnableActions] = useState(false);
-  const [loading, setLoading] = useState(true);
   const user = JSON.parse(localStorage.getItem("loggedIn"));
   const headerObj = {
     "Access-Control-Allow-Headers": "x-access-token",
@@ -40,7 +38,6 @@ const ExpenseDetails = () => {
 
   useEffect(() => {
     if (state?.expense) {
-      setLoading(false);
       setDetails(state.expense);
     }
   }, []);
@@ -74,7 +71,12 @@ const ExpenseDetails = () => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (formData) => {
-    Axios.patch(`${updateExpense}/${details._id}`, formData)
+    Axios({
+      method: "PATCH",
+      url: `${updateExpense}/${details._id}`,
+      headers: headerObj,
+      data: formData,
+    })
       .then((res) => (res.status === 201 ? showDialog(true) : showDialog()))
       .catch((err) => showDialog());
   };
@@ -92,12 +94,6 @@ const ExpenseDetails = () => {
 
   return (
     <Box className="expense-details-container">
-      <Backdrop
-        open={loading}
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
-        <CircularProgress color="primary" />
-      </Backdrop>
       {Object.keys(details).length > 0 ? (
         <div className="m-3">
           <div className={`d-flex justify-content-between align-items-center`}>
@@ -135,7 +131,7 @@ const ExpenseDetails = () => {
               <Grid container spacing={2} className="my-1">
                 {/* Title */}
                 <Grid item xs={4}>
-                  Expense :
+                  <Typography color={"primary"}>Expense :</Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -150,7 +146,7 @@ const ExpenseDetails = () => {
 
                 {/* Description */}
                 <Grid item xs={4}>
-                  Description :
+                  <Typography color={"primary"}>Description :</Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -165,7 +161,7 @@ const ExpenseDetails = () => {
 
                 {/* Date */}
                 <Grid item xs={4}>
-                  Date :
+                  <Typography color={"primary"}>Date :</Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -179,7 +175,7 @@ const ExpenseDetails = () => {
 
                 {/* Budget */}
                 <Grid item xs={4}>
-                  Amount :
+                  <Typography color={"primary"}>Amount :</Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -199,7 +195,7 @@ const ExpenseDetails = () => {
 
                 {/* Payment Type */}
                 <Grid item xs={4}>
-                  Payment Type :
+                  <Typography color={"primary"}>Payment Type :</Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Select
@@ -217,7 +213,7 @@ const ExpenseDetails = () => {
 
                 {/* Address */}
                 <Grid item xs={4}>
-                  Address :
+                  <Typography color={"primary"}>Address :</Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -232,11 +228,11 @@ const ExpenseDetails = () => {
 
                 {/* Profile */}
                 <Grid item xs={4}>
-                  Profile :
+                  <Typography color={"primary"}>Profile :</Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <img
-                    src={details?.image ?? noImage}
+                    src={details?.image !== "" ? details.image : noImage}
                     alt="..."
                     name="image"
                     className="expense-image"

@@ -345,7 +345,7 @@ const ExpenseList = ({
                     ? "rgba(0, 0, 0, 0.2)"
                     : "rgba(255, 255, 255, 0.8)",
               }}
-              onDoubleClick={() => handleDoubleClick(_id)}
+              onClick={() => handleDoubleClick(_id)}
             >
               <Box className="box-container">
                 <Avatar

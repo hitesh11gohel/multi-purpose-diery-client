@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
 
 const Protected = (props) => {
   const { Component } = props;
@@ -8,7 +9,19 @@ const Protected = (props) => {
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("loggedIn");
     if (!isLoggedIn) {
-      navigate("/login");
+      swal({
+        title: "Session Expired",
+        text: "Please log in again.",
+        icon: "error",
+        button: "Ok",
+        dangerMode: true,
+        closeOnClickOutside: false,
+        closeOnEsc: false,
+      }).then((out) => {
+        if (out) {
+          navigate("/login");
+        }
+      });
     }
   }, [navigate]);
 

@@ -2,30 +2,36 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import "./doughnutChart.scss";
-import { Button, Stack } from "@mui/material";
+import { Button, MenuItem, Select, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Doughnut } from "react-chartjs-2";
 import { getExpenses } from "../../service";
 import Axios from "axios";
 import moment from "moment";
+import ChartDataLabels from "chartjs-plugin-datalabels";
+import Chart from "chart.js/auto";
 
 const DoughnutChart = () => {
   const navigate = useNavigate();
-  const [items, setItems] = useState([]);
-  //   const [totalExpense, setTotalExpense] = useState(0);
+  Chart.register(ChartDataLabels);
+  const [allItems, setAllItems] = useState([]);
+  const [selectedItems, setSeletcedItems] = useState([]);
+  const [expenseYears, setExpenseYears] = useState([]);
+  const [totalExpense, setTotalExpense] = useState(0);
+  const [selectedYear, setSelectedYear] = useState("Select year");
 
   const InitColor = localStorage.getItem("themeColor");
   const headerObj = {
     "Access-Control-Allow-Headers": "x-access-token",
-    "x-access-token": JSON.parse(localStorage.getItem("loggedIn")).token,
+    "x-access-token": JSON.parse(localStorage.getItem("loggedIn"))?.token,
   };
   const chartData = {
-    labels: items.map((item) => item.month),
+    labels: selectedItems.map((item) => item.month),
     datasets: [
       {
         label: "Expense",
-        data: items.map((item) => item.total),
+        data: selectedItems.map((item) => item.total),
         backgroundColor: [
           "#4dc9f6",
           "#f67019",
@@ -42,6 +48,21 @@ const DoughnutChart = () => {
         ],
       },
     ],
+  };
+
+  const handleChange = (event) => {
+    setSelectedYear(event.target.value);
+    generateChartData(event.target.value);
+  };
+
+  const generateChartData = (value) => {
+    let total = 0;
+    const selectedYearChartInfo = allItems.filter(
+      (item) => item.month.split("-")[1] === value
+    );
+    setSeletcedItems(selectedYearChartInfo);
+    selectedYearChartInfo.forEach((item) => (total = total + item.total));
+    setTotalExpense(total);
   };
 
   useEffect(() => constructChartInfo(), []);
@@ -69,13 +90,13 @@ const DoughnutChart = () => {
           });
 
           let constructItems = [];
-          //   let total = 0;
           for (let prop in holder) {
-            // total += holder[prop];
             constructItems.push({ month: prop, total: holder[prop] });
           }
-          setItems(constructItems);
-          //   setTotalExpense(total);
+
+          const Years = [...new Set(Months.map((item) => item.year))];
+          setAllItems(constructItems);
+          setExpenseYears(Years);
         }
       })
       .catch((e) => {
@@ -83,9 +104,30 @@ const DoughnutChart = () => {
       });
   };
 
+  // Append '4d' to the colors (alpha channel), except for the hovered index
+  function handleHover(evt, item, legend) {
+    legend.chart.data.datasets[0].backgroundColor.forEach(
+      (color, index, colors) => {
+        colors[index] =
+          index === item.index || color.length === 9 ? color : color + "4D";
+      }
+    );
+    legend.chart.update();
+  }
+
+  // Removes the alpha channel from background colors
+  function handleLeave(evt, item, legend) {
+    legend.chart.data.datasets[0].backgroundColor.forEach(
+      (color, index, colors) => {
+        colors[index] = color.length === 9 ? color.slice(0, -2) : color;
+      }
+    );
+    legend.chart.update();
+  }
+
   return (
     <Box className="chart-container m-3">
-      <div className={`d-flex justify-content-between align-items-center`}>
+      <Box className={`d-flex justify-content-between align-items-center`}>
         <Button
           variant="outlined"
           onClick={() => navigate("/")}
@@ -96,7 +138,27 @@ const DoughnutChart = () => {
         >
           <ArrowBackIosNewIcon />
         </Button>
-      </div>
+      </Box>
+
+      <Select
+        fullWidth
+        variant="standard"
+        name="selectYear"
+        value={selectedYear}
+        className="mt-3 p-2"
+        onChange={handleChange}
+        sx={{ color: InitColor }}
+      >
+        <MenuItem disabled value={selectedYear}>
+          <Typography>Select year</Typography>
+        </MenuItem>
+        {expenseYears?.map((item, i) => (
+          <MenuItem key={i} value={item}>
+            <Typography>{item}</Typography>
+          </MenuItem>
+        ))}
+      </Select>
+
       <Stack
         paddingY={3}
         marginY={3}
@@ -106,6 +168,7 @@ const DoughnutChart = () => {
               ? "rgba(0, 0, 0, 0.2)"
               : "rgba(255, 255, 255, 0.8)",
           borderRadius: "25px",
+          display: selectedYear === "Select year" ? "none" : "block",
         }}
       >
         <Doughnut
@@ -113,51 +176,58 @@ const DoughnutChart = () => {
           options={{
             plugins: {
               legend: {
+                onHover: handleHover,
+                onLeave: handleLeave,
                 position: "bottom",
                 labels: {
                   boxWidth: 25,
                   boxHeight: 10,
                   boxPadding: 5,
                   borderRadius: 50,
+                  color: InitColor,
+                  padding: 25,
                 },
               },
               title: {
                 display: true,
-                text: "All expense chart view",
+                text: `Expense chart of year ${selectedYear}`,
+                color: InitColor,
+              },
+              subtitle: {
+                display: true,
+                text: `Total: ₹ ${totalExpense}`,
+                padding: { bottom: 10 },
+                color: "red",
+                font: { weight: "bold" },
               },
               tooltip: {
                 callbacks: {
                   label: (item) =>
-                    `${item.dataset.label}: ${item.formattedValue} Rs`,
+                    `${item.dataset.label}: ₹ ${item.formattedValue}`,
                 },
               },
-              //   datalabels: {
-              //     display: true,
-              //     backgroundColor: "#ccc",
-              //     borderRadius: 3,
-              //     font: {
-              //       color: "red",
-              //       weight: "bold",
-              //     },
-              //   },
-              //   doughnutlabel: {
-              //     labels: [
-              //       {
-              //         text: "550",
-              //         font: {
-              //           size: 20,
-              //           weight: "bold",
-              //         },
-              //       },
-              //       {
-              //         text: "total",
-              //       },
-              //     ],
-              //   },
+              datalabels: {
+                display: true,
+                color: InitColor,
+                backgroundColor: "#ccc",
+                borderRadius: 3,
+                formatter: (value) => "₹ " + value,
+                font: { color: "red", weight: "bold" },
+              },
             },
           }}
         />
       </Stack>
+
+      <Typography
+        variant="h6"
+        color={"primary"}
+        align="center"
+        marginY={10}
+        sx={{ display: selectedYear === "Select year" ? "block" : "none" }}
+      >
+        Select Year to generate chart
+      </Typography>
     </Box>
   );
 };

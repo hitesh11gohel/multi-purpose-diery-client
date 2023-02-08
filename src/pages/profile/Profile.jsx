@@ -45,7 +45,7 @@ const Profile = () => {
         <Grid container spacing={2} className="my-1">
           {/* Title */}
           <Grid item xs={4}>
-            Name :
+            <Typography color={"primary"}>Name :</Typography>
           </Grid>
           <Grid item xs={8}>
             <Input
@@ -58,7 +58,7 @@ const Profile = () => {
 
           {/* Description */}
           <Grid item xs={4}>
-            UserName :
+            <Typography color={"primary"}>UserName :</Typography>
           </Grid>
           <Grid item xs={8}>
             <Input
@@ -73,7 +73,7 @@ const Profile = () => {
 
           {/* Date */}
           <Grid item xs={4}>
-            Email :
+            <Typography color={"primary"}>Email :</Typography>
           </Grid>
           <Grid item xs={8}>
             <Input
@@ -86,7 +86,7 @@ const Profile = () => {
 
           {/* Budget */}
           <Grid item xs={4}>
-            Mobile :
+            <Typography color={"primary"}>Mobile :</Typography>
           </Grid>
           <Grid item xs={8}>
             <Input
