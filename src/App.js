@@ -39,15 +39,12 @@ function App() {
               path="expense-detail/:id"
               element={<Protected Component={ExpenseDetails} />}
             />
-            <Route
-              path="/profile"
-              element={<Protected Component={Profile} />}
-            />
-            <Route
-              path="chart"
-              element={<Protected Component={DoughnutChart} />}
-            />
           </Route>
+          <Route path="/profile" element={<Protected Component={Profile} />} />
+          <Route
+            path="/chart"
+            element={<Protected Component={DoughnutChart} />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>

@@ -1,6 +1,13 @@
 .profile-container {
     height: calc(100vh - 120px);
 
+    .user-profile {
+        width: auto;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 75px;
+    }
+
     @media only screen and (max-width: 425px) {
         height: calc(99vh - 104px);
     }

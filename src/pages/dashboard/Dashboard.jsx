@@ -160,6 +160,21 @@ const Dashboard = () => {
     });
   };
 
+  const noDataFound = () => {
+    return (
+      items.length === 0 && (
+        <Box
+          textAlign={"center"}
+          marginTop={"3rem"}
+          padding={"1rem"}
+          sx={{ bgcolor: "rgba(255, 255, 255, 0.5)" }}
+        >
+          <Typography variant="h6">No data found</Typography>
+        </Box>
+      )
+    );
+  };
+
   return (
     <Box
       id="scroller"
@@ -207,6 +222,7 @@ const Dashboard = () => {
             InitColor={InitColor}
           />
         )}
+        {noDataFound()}
         <AddContent fetchRecords={handleChildData} />
       </div>
     </Box>
