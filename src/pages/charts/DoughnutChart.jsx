@@ -2,7 +2,15 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@mui/system";
 import "./doughnutChart.scss";
-import { Button, MenuItem, Select, Stack, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  MenuItem,
+  Select,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import { Doughnut } from "react-chartjs-2";
@@ -20,6 +28,7 @@ const DoughnutChart = () => {
   const [expenseYears, setExpenseYears] = useState([]);
   const [totalExpense, setTotalExpense] = useState(0);
   const [selectedYear, setSelectedYear] = useState("Select year");
+  const [loading, setLoading] = useState(false);
 
   const InitColor = localStorage.getItem("themeColor");
   const headerObj = {
@@ -68,40 +77,52 @@ const DoughnutChart = () => {
   useEffect(() => constructChartInfo(), []);
 
   const constructChartInfo = () => {
-    Axios({ method: "GET", url: getExpenses, headers: headerObj })
-      .then((res) => {
-        if (res.status === 200) {
-          const AllData = res.data.data;
-          //   setItems(res.data.data);
-          let Months = AllData.map((item) => ({
-            month: moment(item.date, "YYYY-MM-DD").format("MMMM"),
-            year: moment(item.date, "YYYY-MM-DD").format("YYYY"),
-            totalExpense: item.budget,
-          }));
-
-          let holder = {};
-          Months.forEach(function (d) {
-            const keyName = `${d.month}-${d.year}`;
-            if (holder.hasOwnProperty(keyName)) {
-              holder[keyName] = holder[keyName] + d.totalExpense;
-            } else {
-              holder[keyName] = d.totalExpense;
-            }
-          });
-
-          let constructItems = [];
-          for (let prop in holder) {
-            constructItems.push({ month: prop, total: holder[prop] });
+    setLoading(true);
+    if (localStorage.getItem("expenses")) {
+      const items = JSON.parse(localStorage.getItem("expenses"));
+      setLoading(false);
+      constructData(items);
+    } else {
+      Axios({ method: "GET", url: getExpenses, headers: headerObj })
+        .then((res) => {
+          if (res.status === 200) {
+            const AllData = res.data.data;
+            //   setItems(res.data.data);
+            constructData(AllData);
           }
+        })
+        .catch((e) => {
+          console.log("fetchAllRecords Error :", e);
+        });
+    }
+  };
 
-          const Years = [...new Set(Months.map((item) => item.year))];
-          setAllItems(constructItems);
-          setExpenseYears(Years);
-        }
-      })
-      .catch((e) => {
-        console.log("fetchAllRecords Error :", e);
-      });
+  const constructData = (AllData) => {
+    let Months = AllData.map((item) => ({
+      month: moment(item.date, "YYYY-MM-DD").format("MMMM"),
+      year: moment(item.date, "YYYY-MM-DD").format("YYYY"),
+      totalExpense: item.budget,
+    }));
+
+    let holder = {};
+    Months.forEach(function (d) {
+      const keyName = `${d.month}-${d.year}`;
+      if (holder.hasOwnProperty(keyName)) {
+        holder[keyName] = holder[keyName] + d.totalExpense;
+      } else {
+        holder[keyName] = d.totalExpense;
+      }
+    });
+
+    let constructItems = [];
+    for (let prop in holder) {
+      constructItems.push({ month: prop, total: holder[prop] });
+    }
+
+    const Years = [...new Set(Months.map((item) => item.year))];
+    setAllItems(constructItems);
+    setLoading(false);
+    setExpenseYears(Years);
   };
 
   // Append '4d' to the colors (alpha channel), except for the hovered index
@@ -127,6 +148,13 @@ const DoughnutChart = () => {
 
   return (
     <Box className="chart-container m-3">
+      <Backdrop
+        open={loading}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <CircularProgress color="primary" />
+      </Backdrop>
+
       <Box className={`d-flex justify-content-between align-items-center`}>
         <Button
           variant="outlined"
@@ -213,8 +241,8 @@ const DoughnutChart = () => {
                 backgroundColor: "#ccc",
                 borderRadius: 3,
                 formatter: (value) => "₹ " + value,
-                font: { color: "red", weight: "bold", size: '8px' },
-                padding: 2
+                font: { color: "red", weight: "bold", size: "8px" },
+                padding: 2,
               },
             },
           }}

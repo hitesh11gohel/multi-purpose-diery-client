@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   Grid,
   Input,
   // MenuItem,
@@ -26,6 +28,7 @@ const Profile = () => {
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
   const [enableActions, setEnableActions] = useState(false);
+  const [loading, setLoading] = useState(false);
   const user = JSON.parse(localStorage.getItem("loggedIn"));
   const headerObj = {
     "Access-Control-Allow-Headers": "x-access-token",
@@ -33,6 +36,7 @@ const Profile = () => {
   };
 
   const onSubmit = (data) => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("name", data.name);
     formData.append("username", data.username);
@@ -54,6 +58,7 @@ const Profile = () => {
   };
 
   const showDialog = (success = false) => {
+    setLoading(false);
     return swal({
       title: success ? "User Updated Successfully" : "Oops!",
       text: success ? "" : "Something went wrong!",
@@ -78,6 +83,12 @@ const Profile = () => {
 
   return (
     <Box className="profile-container m-3">
+      <Backdrop
+        open={loading}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <CircularProgress color="primary" />
+      </Backdrop>
       <div className={`d-flex justify-content-between align-items-center`}>
         <Button
           variant="outlined"

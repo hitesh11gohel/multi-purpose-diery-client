@@ -2,7 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Card from "../../components/card/Card";
-import { Box, Input, InputAdornment, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Input,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import "./login.scss";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,6 +20,7 @@ import { signIn } from "../../service";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -30,6 +37,7 @@ const Login = () => {
   const [isPassword, setIsPassword] = useState(true);
 
   const onSubmit = (cred) => {
+    setLoading(true);
     Axios({ url: signIn, method: "POST", data: cred })
       .then((res) => {
         swal({
@@ -37,12 +45,14 @@ const Login = () => {
           icon: "success",
           button: "Go!",
         }).then(() => {
+          setLoading(false);
           localStorage.setItem("loggedIn", JSON.stringify(res.data.user));
           reset();
           navigate("/");
         });
       })
       .catch((err) => {
+        setLoading(false);
         console.log("Error :", err);
         return swal({
           title: "Authantication Error!",
@@ -106,7 +116,11 @@ const Login = () => {
             fullWidth
             className="text-dark border-dark bg-light"
           >
-            Let's go
+            {loading ? (
+              <CircularProgress color="primary" size={"24px"} />
+            ) : (
+              "Let's go"
+            )}
           </Button>
           <Typography variant="body1" className="registerLink">
             Don't have an account ?
