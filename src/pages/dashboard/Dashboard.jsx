@@ -466,6 +466,11 @@ const ChartView = ({ daysInMonth, currentMonth, chartDataArr }) => {
                 `${item.dataset.label}: ${item.formattedValue} Rs`,
             },
           },
+          datalabels: {
+            display: true,
+            formatter: (value) => (value > 0 ? "₹ " + value : ""),
+            font: { color: "red", weight: "bold", size: "10px" },
+          },
         },
       }}
     />
