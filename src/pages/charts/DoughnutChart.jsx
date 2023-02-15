@@ -174,6 +174,7 @@ const DoughnutChart = () => {
         <Doughnut
           data={chartData}
           options={{
+            aspectRatio: 1 / 1.2,
             plugins: {
               legend: {
                 onHover: handleHover,
@@ -212,7 +213,8 @@ const DoughnutChart = () => {
                 backgroundColor: "#ccc",
                 borderRadius: 3,
                 formatter: (value) => "₹ " + value,
-                font: { color: "red", weight: "bold" },
+                font: { color: "red", weight: "bold", size: '8px' },
+                padding: 2
               },
             },
           }}
