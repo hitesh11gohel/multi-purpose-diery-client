@@ -54,6 +54,7 @@ export default function Header(props) {
       if (out) {
         navigate("/login");
         localStorage.removeItem("loggedIn");
+        localStorage.removeItem("expenses");
       }
     });
   };

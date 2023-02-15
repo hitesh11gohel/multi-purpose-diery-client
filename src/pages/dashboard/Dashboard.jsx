@@ -65,20 +65,28 @@ const Dashboard = () => {
 
   const fetchAllRecords = () => {
     setLoading(true);
-    Axios({ method: "GET", url: getExpenses, headers: headerObj })
-      .then((res) => {
-        if (res.status === 200) {
-          setLoading(false);
-          setItems(res.data.data);
-          setCloneItems(res.data.data);
-        } else {
-          showDialog();
-        }
-      })
-      .catch((e) => {
-        console.log("fetchAllRecords Error :", e);
-        showDialog(true);
-      });
+    if (localStorage.getItem("expenses")) {
+      const items = JSON.parse(localStorage.getItem("expenses"));
+      setLoading(false);
+      setItems(items);
+      setCloneItems(items);
+    } else {
+      Axios({ method: "GET", url: getExpenses, headers: headerObj })
+        .then((res) => {
+          if (res.status === 200) {
+            setLoading(false);
+            setItems(res.data.data);
+            setCloneItems(res.data.data);
+            localStorage.setItem("expenses", JSON.stringify(res.data.data));
+          } else {
+            showDialog();
+          }
+        })
+        .catch((e) => {
+          console.log("fetchAllRecords Error :", e);
+          showDialog(true);
+        });
+    }
   };
 
   const showDialog = (error = false) => {
@@ -469,7 +477,7 @@ const ChartView = ({ daysInMonth, currentMonth, chartDataArr }) => {
           datalabels: {
             display: true,
             formatter: (value) => (value > 0 ? "₹ " + value : ""),
-            font: { color: "red", weight: "bold", size: '8px' },
+            font: { color: "red", weight: "bold", size: "8px" },
           },
         },
       }}
