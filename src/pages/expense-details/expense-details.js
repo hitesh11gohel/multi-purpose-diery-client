@@ -142,7 +142,9 @@ const ExpenseDetails = () => {
               <Grid container spacing={2} className="my-1">
                 {/* Title */}
                 <Grid item xs={4}>
-                  <Typography color={"primary"}>Expense :</Typography>
+                  <Typography color={"primary"} variant="body2">
+                    Expense :
+                  </Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -157,7 +159,9 @@ const ExpenseDetails = () => {
 
                 {/* Description */}
                 <Grid item xs={4}>
-                  <Typography color={"primary"}>Description :</Typography>
+                  <Typography color={"primary"} variant="body2">
+                    Description :
+                  </Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -172,7 +176,9 @@ const ExpenseDetails = () => {
 
                 {/* Date */}
                 <Grid item xs={4}>
-                  <Typography color={"primary"}>Date :</Typography>
+                  <Typography color={"primary"} variant="body2">
+                    Date :
+                  </Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -186,7 +192,9 @@ const ExpenseDetails = () => {
 
                 {/* Budget */}
                 <Grid item xs={4}>
-                  <Typography color={"primary"}>Amount :</Typography>
+                  <Typography color={"primary"} variant="body2">
+                    Amount :
+                  </Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -206,7 +214,9 @@ const ExpenseDetails = () => {
 
                 {/* Payment Type */}
                 <Grid item xs={4}>
-                  <Typography color={"primary"}>Payment Type :</Typography>
+                  <Typography color={"primary"} variant="body2">
+                    Payment Type :
+                  </Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Select
@@ -224,7 +234,9 @@ const ExpenseDetails = () => {
 
                 {/* Address */}
                 <Grid item xs={4}>
-                  <Typography color={"primary"}>Address :</Typography>
+                  <Typography color={"primary"} variant="body2">
+                    Address :
+                  </Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <Input
@@ -239,7 +251,9 @@ const ExpenseDetails = () => {
 
                 {/* Profile */}
                 <Grid item xs={4}>
-                  <Typography color={"primary"}>Profile :</Typography>
+                  <Typography color={"primary"} variant="body2">
+                    Profile :
+                  </Typography>
                 </Grid>
                 <Grid item xs={8}>
                   <img

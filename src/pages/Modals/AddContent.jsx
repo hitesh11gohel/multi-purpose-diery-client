@@ -11,6 +11,8 @@ import {
   DialogTitle,
   Select,
   MenuItem,
+  CircularProgress,
+  Backdrop,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useForm } from "react-hook-form";
@@ -29,6 +31,7 @@ import { addExpense } from "../../service";
 export default function AddContent(props) {
   const [open, setOpen] = React.useState(false);
   const user = JSON.parse(localStorage.getItem("loggedIn"));
+  const [loading, setLoading] = React.useState(false);
   const headerObj = {
     "Access-Control-Allow-Headers": "x-access-token",
     "x-access-token": user?.token,
@@ -48,6 +51,7 @@ export default function AddContent(props) {
   } = useForm();
 
   const onSubmit = (data) => {
+    setLoading(true);
     const formData = new FormData();
     formData.append("address", data.address);
     formData.append("budget", data.budget);
@@ -65,6 +69,7 @@ export default function AddContent(props) {
     })
       .then((res) => {
         if (res.status === 201) {
+          setLoading(false);
           handleClose();
           reset();
           props.fetchRecords(true);
@@ -76,6 +81,7 @@ export default function AddContent(props) {
   };
 
   const showDialog = () => {
+    setLoading(false);
     return swal({
       title: "Oops!",
       text: "Something went wrong!",
@@ -92,6 +98,12 @@ export default function AddContent(props) {
       </Box>
 
       <Dialog open={open} onClose={handleClose} scroll="body">
+        <Backdrop
+          open={loading}
+          sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        >
+          <CircularProgress color="primary" />
+        </Backdrop>
         <form onSubmit={handleSubmit(onSubmit)} className="modal-container">
           <DialogTitle
             color={

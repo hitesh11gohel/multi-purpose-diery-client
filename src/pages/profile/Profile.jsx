@@ -49,7 +49,7 @@ const Profile = () => {
 
     Axios({
       method: "PATCH",
-      url: `${updateUserInfo}/${user.id}`,
+      url: `${updateUserInfo}/${user?.id}`,
       headers: headerObj,
       data: formData,
     })
@@ -120,7 +120,7 @@ const Profile = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack sx={{ bgcolor: "rgba(255, 255, 255, 0.5)", my: 2, px: 2 }}>
           <Typography color="primary" variant="h6">
-            Welcome Back, {user.name}
+            Welcome Back, {user?.name}
           </Typography>
         </Stack>
         <Paper sx={{ p: 2, mt: 2 }}>
@@ -133,7 +133,7 @@ const Profile = () => {
               <Input
                 fullWidth
                 name="name"
-                {...register("name", { value: user.name })}
+                {...register("name", { value: user?.name })}
                 disabled={enableActions ? false : true}
               />
             </Grid>
@@ -148,7 +148,7 @@ const Profile = () => {
                 disabled={enableActions ? false : true}
                 name="username"
                 {...register("username", {
-                  value: user.username,
+                  value: user?.username,
                 })}
               />
             </Grid>
@@ -162,7 +162,7 @@ const Profile = () => {
                 fullWidth
                 name="email"
                 disabled={enableActions ? false : true}
-                {...register("email", { value: user.email })}
+                {...register("email", { value: user?.email })}
               />
             </Grid>
 
@@ -176,12 +176,12 @@ const Profile = () => {
                 name="mobile"
                 variant="standard"
                 disabled={enableActions ? false : true}
-                {...register("mobile", { value: user.mobile })}
+                {...register("mobile", { value: user?.mobile })}
               />
             </Grid>
 
             {/* Address */}
-            {(user.address || enableActions) && (
+            {(user?.address || enableActions) && (
               <>
                 <Grid item xs={4}>
                   <Typography color={"primary"}>Address :</Typography>
@@ -191,7 +191,7 @@ const Profile = () => {
                     fullWidth
                     name="address"
                     disabled={enableActions ? false : true}
-                    {...register("address", { value: user.address })}
+                    {...register("address", { value: user?.address })}
                   />
                 </Grid>
               </>
@@ -206,9 +206,9 @@ const Profile = () => {
                 fullWidth
                 name="state"
                 variant="standard"
-                defaultValue={user.state}
+                defaultValue={user?.state}
                 disabled={enableActions ? false : true}
-                {...register("state", { value: user.state })}
+                {...register("state", { value: user?.state })}
               >
                 <MenuItem value="gujrat">Gujrat</MenuItem>
                 <MenuItem value="goa">Goa</MenuItem>
@@ -228,9 +228,9 @@ const Profile = () => {
                 fullWidth
                 name="country"
                 variant="standard"
-                defaultValue={user.country}
+                defaultValue={user?.country}
                 disabled={enableActions ? false : true}
-                {...register("country", { value: user.country })}
+                {...register("country", { value: user?.country })}
               >
                 <MenuItem value="india">India</MenuItem>
                 <MenuItem value="england">England</MenuItem>
@@ -239,7 +239,7 @@ const Profile = () => {
             </Grid> */}
 
             {/* Profile */}
-            {(user.profile || enableActions) && (
+            {(user?.profile || enableActions) && (
               <>
                 <Grid item xs={4}>
                   <Typography color={"primary"}>Profile :</Typography>

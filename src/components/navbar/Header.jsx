@@ -2,13 +2,13 @@ import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import LogoutIcon from "@mui/icons-material/Logout";
 import swal from "sweetalert";
 import { useNavigate } from "react-router-dom";
 import DisplaySettingsIcon from "@mui/icons-material/DisplaySettings";
 import { SwatchesPicker } from "react-color";
 import {
+  Avatar,
   Button,
   Divider,
   Drawer,
@@ -22,6 +22,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import SyncIcon from "@mui/icons-material/Sync";
 
 export default function Header(props) {
   const navigate = useNavigate();
@@ -54,6 +55,20 @@ export default function Header(props) {
       if (out) {
         navigate("/login");
         localStorage.removeItem("loggedIn");
+        localStorage.removeItem("expenses");
+      }
+    });
+  };
+
+  const fullSync = () => {
+    swal({
+      title: "Synchronization",
+      text: "Data synchronization in progress, please wait ...",
+      icon: "info",
+      closeOnClickOutside: false,
+      closeOnEsc: false,
+    }).then((out) => {
+      if (out) {
         localStorage.removeItem("expenses");
       }
     });
@@ -107,7 +122,26 @@ export default function Header(props) {
             />
           </ListItemButton>
         </ListItem>
+      </List>
+      <List sx={{ position: "absolute", bottom: 0, width: "100%" }}>
         <Divider />
+        <ListItem disablePadding onClick={() => fullSync()}>
+          <ListItemButton>
+            <ListItemIcon sx={{ color: currentTheme }}>
+              <SyncIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Full Sync"} sx={{ color: currentTheme }} />
+          </ListItemButton>
+        </ListItem>
+
+        <ListItem disablePadding onClick={() => handleMenu()}>
+          <ListItemButton>
+            <ListItemIcon sx={{ color: currentTheme }}>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary={"Log out"} sx={{ color: currentTheme }} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
@@ -122,14 +156,18 @@ export default function Header(props) {
           {list()}
         </Drawer>
 
-        <Toolbar className="d-flex justify-content-between">
-          <Button onClick={toggleDrawer(true)}>
-            <MenuIcon />
-          </Button>
-          <IconButton size="large" onClick={() => handleMenu()} color="primary">
-            <LogoutIcon />
-          </IconButton>
-        </Toolbar>
+        {localStorage.getItem("loggedIn") && (
+          <Toolbar className="d-flex justify-content-between">
+            <Button onClick={toggleDrawer(true)}>
+              <MenuIcon />
+            </Button>
+            <Avatar
+              sx={{ width: 30, height: 30 }}
+              alt={JSON.parse(localStorage.getItem("loggedIn"))?.name}
+              src={JSON.parse(localStorage.getItem("loggedIn"))?.profile}
+            />
+          </Toolbar>
+        )}
 
         {isOpen && (
           <Box ref={popover} className="colorPicker">

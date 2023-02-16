@@ -48,7 +48,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     if (localStorage.getItem("loggedIn")) fetchAllRecords();
-  }, []);
+  }, [localStorage.getItem("loggedIn")]);
   useEffect(() => getMonthWiseData(), [items]);
 
   const handleChildData = () => fetchAllRecords();
@@ -90,6 +90,7 @@ const Dashboard = () => {
   };
 
   const showDialog = (error = false) => {
+    setLoading(false);
     localStorage.removeItem("loggedIn");
     swal({
       title: error ? "Oops!" : "Session Expired",
