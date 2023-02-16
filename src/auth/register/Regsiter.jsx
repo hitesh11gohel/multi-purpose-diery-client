@@ -2,7 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Card from "../../components/card/Card";
-import { Box, Input, InputAdornment, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Input,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import "./register.scss";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,6 +24,7 @@ import swal from "sweetalert";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -34,9 +41,11 @@ const Register = () => {
   }, []);
 
   const onSubmit = (user) => {
+    setLoading(true);
     Axios({ url: signUp, method: "POST", data: user })
       .then((res) => {
         if (res.status === 201) {
+          setLoading(false);
           reset();
           navigate("/");
         } else {
@@ -61,7 +70,7 @@ const Register = () => {
           <Box className="input-box">
             <Input
               name="name"
-              placeholder="User"
+              placeholder="user"
               className="input"
               {...register("name", {
                 required: "Please enter your name ***",
@@ -165,12 +174,17 @@ const Register = () => {
             sx={{ margin: "1rem 0" }}
             type="submit"
             fullWidth
+            disabled={loading}
           >
-            Register
+            {loading ? (
+              <CircularProgress color="primary" size={"24px"} />
+            ) : (
+              "Register"
+            )}
           </Button>
           <Typography variant="body1" className="registerLink">
             Already have an account ?
-            <Link to="/" className="routerLink">
+            <Link to="/login" className="routerLink">
               Sign in
             </Link>
           </Typography>

@@ -47,12 +47,6 @@ export default function AddContent(props) {
     formState: { errors },
   } = useForm();
 
-  // const [age, setAge] = React.useState("");
-
-  // const handleChange = (event) => {
-  //   setAge(event.target.value);
-  // };
-
   const onSubmit = (data) => {
     const formData = new FormData();
     formData.append("address", data.address);
@@ -106,14 +100,14 @@ export default function AddContent(props) {
                 : "primary"
             }
           >
-            Add Item
+            Add Expense
           </DialogTitle>
           <DialogContent>
             {/* Title */}
             <Box className="input-box">
               <Input
                 name="title"
-                placeholder="Add title"
+                placeholder="title"
                 className="input"
                 {...register("title", {
                   required: "Please enter title ***",
@@ -134,7 +128,7 @@ export default function AddContent(props) {
             <Box className="input-box">
               <Input
                 name="description"
-                placeholder="Add description"
+                placeholder="description"
                 className="input"
                 {...register("description")}
                 startAdornment={
@@ -149,7 +143,7 @@ export default function AddContent(props) {
             <Box className="input-box">
               <Input
                 name="address"
-                placeholder="Add location"
+                placeholder="location"
                 className="input"
                 {...register("address", {
                   required: "Please enter location ***",
@@ -189,7 +183,7 @@ export default function AddContent(props) {
             <Box className="input-box">
               <Input
                 name="budget"
-                placeholder="Add budget"
+                placeholder="budget"
                 className="input"
                 type="text"
                 {...register("budget", {
@@ -230,7 +224,7 @@ export default function AddContent(props) {
             <Box className="input-box">
               <Input
                 name="image"
-                placeholder="Add image"
+                placeholder="image"
                 className="input"
                 type="file"
                 {...register("image")}

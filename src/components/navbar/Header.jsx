@@ -122,20 +122,14 @@ export default function Header(props) {
           {list()}
         </Drawer>
 
-        {localStorage.getItem("loggedIn") && (
-          <Toolbar className="d-flex justify-content-between">
-            <Button onClick={toggleDrawer(true)}>
-              <MenuIcon />
-            </Button>
-            <IconButton
-              size="large"
-              onClick={() => handleMenu()}
-              color="primary"
-            >
-              <LogoutIcon />
-            </IconButton>
-          </Toolbar>
-        )}
+        <Toolbar className="d-flex justify-content-between">
+          <Button onClick={toggleDrawer(true)}>
+            <MenuIcon />
+          </Button>
+          <IconButton size="large" onClick={() => handleMenu()} color="primary">
+            <LogoutIcon />
+          </IconButton>
+        </Toolbar>
 
         {isOpen && (
           <Box ref={popover} className="colorPicker">

@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   Grid,
   Input,
   InputAdornment,
@@ -31,6 +33,7 @@ const ExpenseDetails = () => {
   const [details, setDetails] = useState({});
   const [enableActions, setEnableActions] = useState(false);
   const user = JSON.parse(localStorage.getItem("loggedIn"));
+  const [loading, setLoading] = useState(false);
   const headerObj = {
     "Access-Control-Allow-Headers": "x-access-token",
     "x-access-token": user?.token,
@@ -71,6 +74,7 @@ const ExpenseDetails = () => {
   const { register, handleSubmit } = useForm();
 
   const onSubmit = (formData) => {
+    setLoading(true);
     Axios({
       method: "PATCH",
       url: `${updateExpense}/${details._id}`,
@@ -82,6 +86,7 @@ const ExpenseDetails = () => {
   };
 
   const showDialog = (success = false) => {
+    setLoading(false);
     return swal({
       title: success ? "Record Updated Successfully" : "Oops!",
       text: success ? "" : "Something went wrong!",
@@ -94,6 +99,12 @@ const ExpenseDetails = () => {
 
   return (
     <Box className="expense-details-container">
+      <Backdrop
+        open={loading}
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      >
+        <CircularProgress color="primary" />
+      </Backdrop>
       {Object.keys(details).length > 0 ? (
         <div className="m-3">
           <div className={`d-flex justify-content-between align-items-center`}>

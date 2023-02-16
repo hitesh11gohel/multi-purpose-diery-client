@@ -40,12 +40,12 @@ const Login = () => {
     setLoading(true);
     Axios({ url: signIn, method: "POST", data: cred })
       .then((res) => {
+        setLoading(false);
         swal({
           title: "Logged in successfully!",
           icon: "success",
           button: "Go!",
         }).then(() => {
-          setLoading(false);
           localStorage.setItem("loggedIn", JSON.stringify(res.data.user));
           reset();
           navigate("/");
@@ -115,6 +115,7 @@ const Login = () => {
             type="submit"
             fullWidth
             className="text-dark border-dark bg-light"
+            disabled={loading}
           >
             {loading ? (
               <CircularProgress color="primary" size={"24px"} />
