@@ -27,4 +27,8 @@
     margin-left: 5px;
     color: #1976d2;
   }
+
+  @media only screen and (max-width: 375px) {
+    padding: 2rem 1.5rem;
+  }
 }

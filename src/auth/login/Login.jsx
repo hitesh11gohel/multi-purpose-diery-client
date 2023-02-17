@@ -17,7 +17,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import swal from "sweetalert";
 import Axios from "axios";
 import { signIn } from "../../service";
-
+import SiteLogo from "../../assets/expense-yard-logo.png";
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -66,6 +66,13 @@ const Login = () => {
   return (
     <Card>
       <Box className="login-container">
+        <Typography
+          component={"img"}
+          src={SiteLogo}
+          alt="..."
+          sx={{ width: 70, height: 70, marginBottom: 2 }}
+          textAlign={"center"}
+        />
         <Typography variant="h4" textAlign={"center"}>
           Login
         </Typography>
