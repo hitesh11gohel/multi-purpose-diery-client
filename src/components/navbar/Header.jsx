@@ -70,6 +70,7 @@ export default function Header(props) {
     }).then((out) => {
       if (out) {
         localStorage.removeItem("expenses");
+        navigate("/login");
       }
     });
   };

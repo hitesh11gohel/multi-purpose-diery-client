@@ -67,6 +67,19 @@ $secondary-color: #ffc107;
     height: calc(99vh - 73px);
   }
 
+  @media only screen and (max-width: 320px) {
+    .avatar {
+      margin: 0 8px 0 0;
+    }
+
+    .ex-title,
+    .ex-address,
+    .ex-date,
+    .ex-budget {
+      font-size: 14px;
+    }
+  }
+
   @media only screen and (min-width: 786px) {
     .floating {
       right: 41%

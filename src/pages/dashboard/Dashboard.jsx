@@ -374,6 +374,7 @@ const ExpenseList = ({
             >
               <Box className="box-container">
                 <Avatar
+                  className="avatar"
                   sx={{
                     mr: 2,
                     bgcolor: InitColor,
@@ -384,21 +385,23 @@ const ExpenseList = ({
                   {title.charAt(0)}
                 </Avatar>
                 <div className="flex-grow-1">
-                  <Typography variant="body1" color="primary">
+                  <Typography variant="body1" color="primary" className="ex-title">
                     {title.includes(" ")
                       ? `${title.split(" ")[0]} ${title.split(" ")[1]}
                         ${title.split(" ")[2] ? title.split(" ")[2] : ""}`
                       : title}
                   </Typography>
-                  <Typography variant="body2">
+                  <Typography variant="body2" className="ex-address">
                     {address.length > 22
                       ? `${address.substr(0, 22)}...`
                       : address}
                   </Typography>
                 </div>
                 <div style={{ textAlign: "right" }}>
-                  <Typography variant="body2">{date}</Typography>
-                  <Typography variant="body2">
+                  <Typography variant="body2" className="ex-date">
+                    {date}
+                  </Typography>
+                  <Typography variant="body2" className="ex-budget">
                     <CurrencyRupeeIcon sx={{ width: "16px" }} />
                     <span>{budget} </span>
                   </Typography>
