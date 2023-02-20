@@ -19,7 +19,7 @@ code {
   width: 480px;
   height: 100vh;
   margin: auto;
-  border: 1px solid #e2e2e2;
+  /* border: 1px solid #e2e2e2; */
   box-shadow: 0 7px 14px 0 rgba(65, 69, 88, 0.1), 0 3px 6px 0 rgba(0, 0, 0, 0.07);
 }
 

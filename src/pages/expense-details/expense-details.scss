@@ -1,5 +1,5 @@
 .expense-details-container {
-    height: calc(100vh - 112px);
+    height: calc(100vh - 103px);
 
     .input-box {
         margin: 2rem 0;
@@ -20,13 +20,13 @@
     }
 
     .expense-image {
-        width: auto;
+        width: 150px;
         height: 150px;
         object-fit: cover;
     }
 
     @media only screen and (max-width: 425px) {
-        height: calc(99vh - 88px);
+        height: calc(99vh - 86px);
     }
 
     @media only screen and (max-width: 375px) and (max-height: 667px) {

@@ -64,7 +64,7 @@ $secondary-color: #ffc107;
   }
 
   @media only screen and (max-width: 425px) {
-    height: calc(99vh - 73px);
+    height: calc(99vh - 70px);
   }
 
   @media only screen and (max-width: 320px) {
@@ -77,6 +77,11 @@ $secondary-color: #ffc107;
     .ex-date,
     .ex-budget {
       font-size: 14px;
+    }
+
+    .action-button {
+      padding: 4px;
+      max-width: 30px;
     }
   }
 

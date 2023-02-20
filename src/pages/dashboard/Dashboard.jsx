@@ -143,7 +143,8 @@ const Dashboard = () => {
     filtered.length > 0 && setItems(filtered);
   }, 500);
 
-  const handleDelete = (id) => {
+  const handleDelete = (e, id) => {
+    e.stopPropagation();
     swal({
       title: "Delete!",
       text: "Are you sure you want to delete this thread!",
@@ -385,7 +386,11 @@ const ExpenseList = ({
                   {title.charAt(0)}
                 </Avatar>
                 <div className="flex-grow-1">
-                  <Typography variant="body1" color="primary" className="ex-title">
+                  <Typography
+                    variant="body1"
+                    color="primary"
+                    className="ex-title"
+                  >
                     {title.includes(" ")
                       ? `${title.split(" ")[0]} ${title.split(" ")[1]}
                         ${title.split(" ")[2] ? title.split(" ")[2] : ""}`
@@ -411,9 +416,9 @@ const ExpenseList = ({
                   color="error"
                   size="small"
                   className={`${
-                    isEnableActions ? "d-block" : "d-none"
+                    isEnableActions ? "d-flex" : "d-none"
                   } action-button my-1 mx-3`}
-                  onClick={() => handleDeleteItem(_id)}
+                  onClick={(e) => handleDeleteItem(e, _id)}
                 >
                   <DeleteForeverIcon />
                 </Button>
