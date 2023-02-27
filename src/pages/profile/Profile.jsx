@@ -256,7 +256,7 @@ const Profile = () => {
                   ) : (
                     <Avatar
                       src={user?.profile ?? noImage}
-                      alt="..."
+                      alt={user?.name}
                       name="image"
                       sx={{ width: 150, height: 150 }}
                     />
