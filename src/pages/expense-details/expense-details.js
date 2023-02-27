@@ -88,7 +88,7 @@ const ExpenseDetails = () => {
   const showDialog = (success = false) => {
     setLoading(false);
     return swal({
-      title: success ? "Record Updated Successfully" : "Oops!",
+      title: success ? "Successfully updated" : "Oops!",
       text: success ? "" : "Something went wrong!",
       icon: success ? "success" : "error",
       button: success ? "Ok" : "Retry!",
@@ -169,7 +169,7 @@ const ExpenseDetails = () => {
                     disabled={enableActions ? false : true}
                     name="description"
                     {...register("description", {
-                      value: details.descreption ? details.descreption : "",
+                      value: details.description ? details.description : "",
                     })}
                   />
                 </Grid>

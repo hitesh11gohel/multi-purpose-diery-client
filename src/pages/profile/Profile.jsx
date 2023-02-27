@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Avatar,
   Backdrop,
   Box,
   Button,
@@ -60,7 +61,7 @@ const Profile = () => {
   const showDialog = (success = false) => {
     setLoading(false);
     return swal({
-      title: success ? "User Updated Successfully" : "Oops!",
+      title: success ? "Successfully updated" : "Oops!",
       text: success ? "" : "Something went wrong!",
       icon: success ? "success" : "error",
       button: success ? "Ok" : "Retry!",
@@ -253,11 +254,11 @@ const Profile = () => {
                       {...register("profile")}
                     />
                   ) : (
-                    <img
+                    <Avatar
                       src={user?.profile ?? noImage}
                       alt="..."
                       name="image"
-                      className="user-profile"
+                      sx={{ width: 150, height: 150 }}
                     />
                   )}
                 </Grid>{" "}
